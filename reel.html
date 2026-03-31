@@ -6,169 +6,110 @@
     <title>Your Delivery Video — Wheels2Reels</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { 
-            --gold: #F5A623; 
-            --gold-dark: #C4841A; 
-            --bg: #080808; 
-            --surface: #111111; 
-            --surface2: #1A1A1A; 
-            --border: #222222; 
-            --text: #FFFFFF; 
-            --muted: #666666; 
-            --subtle: #333333; 
-            --ocean-blue: #0047AB; 
-        }
+        :root { --gold: #F5A623; --gold-dark: #C4841A; --bg: #080808; --surface: #111111; --surface2: #1A1A1A; --border: #222222; --text: #FFFFFF; --muted: #666666; --subtle: #333333; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
-        
-        .header { position: relative; padding: 40px 24px 30px; text-align: center; border-bottom: 1px solid var(--border); }
-        .business-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 8vw, 52px); letter-spacing: 2px; color: var(--text); line-height: 1; margin-bottom: 6px; }
-        .tagline { font-size: 12px; color: var(--muted); letter-spacing: 4px; text-transform: uppercase; font-weight: 300; }
+        .header { padding: 40px 24px 30px; text-align: center; border-bottom: 1px solid var(--border); }
+        .business-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 8vw, 52px); letter-spacing: 2px; line-height: 1; margin-bottom: 6px; }
+        .tagline { font-size: 12px; color: var(--muted); letter-spacing: 4px; text-transform: uppercase; }
         .gold-line { width: 40px; height: 2px; background: var(--gold); margin: 16px auto 0; }
-
         .content { max-width: 480px; margin: 0 auto; padding: 24px 16px 60px; }
-        
         .video-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #000; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); display: none; border: 1px solid var(--border); }
-        video { width: 100%; display: block; border-radius: 15px; }
-        .video-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(245,166,35,0.4); color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; padding: 6px 12px; border-radius: 20px; z-index: 10; }
-
+        video { width: 100%; display: block; }
+        .video-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(245,166,35,0.4); color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 6px 12px; border-radius: 20px; z-index: 10; }
         .btn-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 24px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s ease; letter-spacing: 0.5px; border: none; }
-        
+        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 24px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; }
         .btn-review { background: var(--gold); color: #000; }
         .btn-download { background: transparent; color: var(--text); border: 1px solid var(--subtle); margin-top: 10px; }
-        .btn:active { transform: scale(0.98); opacity: 0.9; }
-
-        /* Social Section */
         .social-section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; display: none; }
         .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
         .section-label::after { content: ''; flex: 1; height: 1px; background: var(--subtle); }
-        .post-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; transition: background 0.2s; }
-        .post-card:hover { background: #222; }
+        .post-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
         .post-text { font-size: 14px; line-height: 1.6; color: #ddd; margin-bottom: 15px; white-space: pre-wrap; }
-        .copy-row { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--subtle); padding-top: 12px; }
-        .copy-hint { font-size: 11px; color: var(--gold); font-weight: bold; text-transform: uppercase; }
-
         .logo-section { text-align: center; padding: 20px 0; display: none; }
         .logo-section img { max-width: 180px; max-height: 80px; object-fit: contain; }
-
         .footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); }
-        .footer-brand { color: var(--gold); font-size: 14px; font-weight: bold; letter-spacing: 2px; margin-bottom: 4px; }
-        .footer-sub { color: var(--muted); font-size: 10px; letter-spacing: 1px; }
-
-        .loading-state { text-align: center; padding: 80px 20px; font-family: 'Bebas Neue'; font-size: 24px; color: var(--muted); letter-spacing: 2px; }
+        .footer-brand { color: var(--gold); font-size: 14px; font-weight: bold; letter-spacing: 2px; }
     </style>
 </head>
 <body>
-
-<div class="header">
-    <div class="business-name" id="charterName">WHEELS2REELS</div>
-    <div class="tagline">Your Professional Delivery</div>
-    <div class="gold-line"></div>
-</div>
-
-<div class="content">
-    <div id="loadingState" class="loading-state">PREPARING YOUR EXPERIENCE...</div>
-
-    <div class="video-wrap" id="videoWrap">
-        <div class="video-badge">Cinematic 4K</div>
-        <video id="mainVideo" controls playsinline preload="metadata"></video>
+    <div class="header">
+        <div class="business-name" id="charterName">WHEELS2REELS</div>
+        <div class="tagline">Automated Delivery</div>
+        <div class="gold-line"></div>
     </div>
-
-    <div class="btn-group" id="btnGroup" style="display:none;">
-        <a id="reviewBtn" href="#" class="btn btn-review" style="display:none;" target="_blank">
-            <span>⭐</span> LEAVE A REVIEW
-        </a>
-    </div>
-
-    <div class="social-section" id="socialSection">
-        <div class="section-label">Suggested Caption</div>
-        <div class="post-card" onclick="copyPost()">
-            <div class="post-text" id="post1txt"></div>
-            <div class="copy-row">
-                <span class="copy-hint" id="toast">TAP TO COPY & SHARE</span>
-                <span style="font-size:16px;">📋</span>
+    <div class="content">
+        <div class="video-wrap" id="videoWrap">
+            <div class="video-badge">Cinematic 4K</div>
+            <video id="mainVideo" controls playsinline preload="metadata"></video>
+        </div>
+        <div class="btn-group" id="btnGroup" style="display:none;">
+            <a id="reviewBtn" href="#" class="btn btn-review" style="display:none;" target="_blank">⭐ LEAVE A REVIEW</a>
+        </div>
+        <div class="social-section" id="socialSection">
+            <div class="section-label">Suggested Caption</div>
+            <div class="post-card" onclick="copyPost()">
+                <div class="post-text" id="post1txt"></div>
+                <div style="font-size:11px; color:var(--gold); font-weight:bold; text-align:right;">TAP TO COPY 📋</div>
             </div>
         </div>
+        <button id="downloadBtn" class="btn btn-download" style="display:none;" onclick="handleDownload()">⬇️ DOWNLOAD VIDEO</button>
+        <div class="logo-section" id="logoSection"><img id="charterLogo" src=""/></div>
     </div>
+    <div class="footer"><div class="footer-brand">POWERED BY WHEELS2REELS</div></div>
 
-    <a id="downloadBtn" href="#" class="btn btn-download" style="display:none;">
-        <span>⬇️</span> DOWNLOAD VIDEO
-    </a>
-
-    <div class="logo-section" id="logoSection">
-        <img id="charterLogo" src="" alt="Business Logo"/>
-    </div>
-</div>
-
-<div class="footer">
-    <div class="footer-brand">POWERED BY WHEELS2REELS</div>
-    <div class="footer-sub">PREMIUM AUTOMOTIVE CONTENT AUTOMATION</div>
-</div>
-
-<script>
-    function getParam(name) {
-        const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get(name); // Browser handles decoding automatically here
-    }
-
-    function copyPost() {
-        const text = document.getElementById('post1txt').innerText;
-        const toast = document.getElementById('toast');
-        navigator.clipboard.writeText(text).then(() => {
-            toast.innerText = '✓ COPIED TO CLIPBOARD';
-            toast.style.color = '#25D366';
-            setTimeout(() => {
-                toast.innerText = 'TAP TO COPY & SHARE';
-                toast.style.color = '';
-            }, 2000);
-        });
-    }
-
-    window.onload = function() {
-        const name = getParam('name');
-        const videoUrl = getParam('video');
-        const logo = getParam('logo');
-        const review = getParam('review');
-        const caption = getParam('caption') || getParam('post1'); // Supports both parameter names
-
-        document.getElementById('loadingState').style.display = 'none';
-
-        if (name) {
-            document.getElementById('charterName').innerText = name.toUpperCase();
-            document.title = name + " | Your Reel";
+    <script>
+        function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+        
+        function copyPost() {
+            const text = document.getElementById('post1txt').innerText;
+            navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!'));
         }
 
-        if (videoUrl) {
-            const video = document.getElementById('mainVideo');
-            video.src = videoUrl;
-            document.getElementById('videoWrap').style.display = 'block';
-            
-            const dlBtn = document.getElementById('downloadBtn');
-            dlBtn.href = videoUrl;
-            dlBtn.setAttribute('download', 'My-Delivery-Video.mp4');
-            dlBtn.style.display = 'flex';
-            document.getElementById('btnGroup').style.display = 'flex';
+        // FORCED DOWNLOAD LOGIC
+        function handleDownload() {
+            let videoUrl = getParam('video');
+            if (videoUrl) {
+                // Ensure Cloudinary flag is present to force download
+                if (!videoUrl.includes('fl_attachment')) {
+                    videoUrl = videoUrl.replace('/upload/', '/upload/fl_attachment/');
+                }
+                const link = document.createElement('a');
+                link.href = videoUrl;
+                link.setAttribute('download', 'DeliveryVideo.mp4');
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
         }
 
-        if (review && review !== '') {
-            const rBtn = document.getElementById('reviewBtn');
-            rBtn.href = review;
-            rBtn.style.display = 'flex';
-        }
+        window.onload = function() {
+            const name = getParam('name');
+            const videoUrl = getParam('video');
+            const caption = getParam('caption');
+            const review = getParam('review');
+            const logo = getParam('logo');
 
-        if (caption && caption.trim() !== '') {
-            document.getElementById('socialSection').style.display = 'block';
-            document.getElementById('post1txt').innerText = caption;
-        }
-
-        if (logo) {
-            const lImg = document.getElementById('charterLogo');
-            lImg.src = logo;
-            document.getElementById('logoSection').style.display = 'block';
-        }
-    };
-</script>
-
+            if (name) document.getElementById('charterName').innerText = name.toUpperCase();
+            if (videoUrl) {
+                document.getElementById('mainVideo').src = videoUrl.replace('fl_attachment/', ''); // Play without attachment flag
+                document.getElementById('videoWrap').style.display = 'block';
+                document.getElementById('btnGroup').style.display = 'flex';
+                document.getElementById('downloadBtn').style.display = 'flex';
+            }
+            if (caption) {
+                document.getElementById('socialSection').style.display = 'block';
+                document.getElementById('post1txt').innerText = decodeURIComponent(caption);
+            }
+            if (review) {
+                document.getElementById('reviewBtn').href = review;
+                document.getElementById('reviewBtn').style.display = 'flex';
+            }
+            if (logo) {
+                document.getElementById('charterLogo').src = logo;
+                document.getElementById('logoSection').style.display = 'block';
+            }
+        };
+    </script>
 </body>
 </html>
