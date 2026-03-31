@@ -8,39 +8,37 @@
     <style>
         :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); padding-bottom: 50px; }
-        .header { padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border); }
-        .business-name { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: var(--gold); }
-        .content { max-width: 450px; margin: 0 auto; padding: 20px; }
-        .video-wrap { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); padding-bottom: 60px; text-align: center; }
+        .header { padding: 50px 20px 30px; border-bottom: 1px solid var(--border); }
+        .biz-name { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: var(--gold); line-height: 1; }
+        .content { max-width: 480px; margin: 0 auto; padding: 20px; }
+        .video-wrap { border-radius: 20px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.7); background: #000; }
         video { width: 100%; display: block; }
-        .btn { display: block; width: 100%; padding: 18px; text-align: center; border-radius: 12px; font-weight: bold; text-decoration: none; margin-bottom: 15px; cursor: pointer; border: none; font-size: 16px; }
+        .btn { display: block; width: 100%; padding: 20px; border-radius: 14px; font-weight: 800; text-decoration: none; margin-bottom: 15px; font-size: 16px; transition: 0.2s; border: none; cursor: pointer; }
         .btn-review { background: var(--gold); color: #000; }
         .btn-download { background: transparent; color: #fff; border: 1px solid #444; }
-        /* BIG LOGO FIX */
-        .logo-section { text-align: center; padding: 40px 10px; }
-        .logo-section img { width: 100%; max-width: 350px; height: auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); }
+        .logo-section { padding: 50px 20px; }
+        .logo-section img { width: 100%; max-width: 380px; height: auto; object-fit: contain; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
     </style>
 </head>
 <body>
-    <div class="header"><div class="business-name" id="bizName">LOADING...</div></div>
+    <div class="header"><div class="biz-name" id="bizName">LOADING...</div></div>
     <div class="content">
         <div class="video-wrap"><video id="mainVideo" controls playsinline></video></div>
-        <a id="reviewLink" href="#" class="btn btn-review">⭐ LEAVE A REVIEW</a>
+        <a id="reviewLink" href="#" class="btn btn-review" target="_blank">⭐ LEAVE A REVIEW</a>
         <button class="btn btn-download" onclick="handleDownload()">⬇️ DOWNLOAD VIDEO</button>
         <div class="logo-section"><img id="bizLogo" src=""></div>
     </div>
     <script>
-        const params = new URLSearchParams(window.location.search);
-        document.getElementById('bizName').innerText = (params.get('name') || 'WHEELS2REELS').toUpperCase();
-        document.getElementById('mainVideo').src = params.get('video')?.replace('fl_attachment/', '') || '';
-        document.getElementById('reviewLink').href = params.get('review') || '#';
-        document.getElementById('bizLogo').src = params.get('logo') || '';
-        
+        const p = new URLSearchParams(window.location.search);
+        document.getElementById('bizName').innerText = (p.get('name') || 'WHEELS2REELS').toUpperCase();
+        document.getElementById('mainVideo').src = p.get('video')?.replace('fl_attachment/', '') || '';
+        document.getElementById('reviewLink').href = p.get('review') || '#';
+        document.getElementById('bizLogo').src = p.get('logo') || '';
         function handleDownload() {
-            let url = params.get('video');
-            if (!url.includes('fl_attachment')) url = url.replace('/upload/', '/upload/fl_attachment/');
-            const a = document.createElement('a'); a.href = url; a.download = 'Video.mp4'; a.click();
+            let u = p.get('video');
+            if (!u.includes('fl_attachment')) u = u.replace('/upload/', '/upload/fl_attachment/');
+            const a = document.createElement('a'); a.href = u; a.download = 'Cinematic_Reel.mp4'; a.click();
         }
     </script>
 </body>
