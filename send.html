@@ -3,51 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Send Video — Wheels2Reels</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>WhatsApp Sender — Wheels2Reels</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        body { background: #080808; color: #fff; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; }
-        .card { background: #111; border: 1px solid #222; padding: 30px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; box-shadow: 0 10px 40px rgba(0,0,0,0.5); }
-        h1 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; color: #F5A623; margin-bottom: 10px; font-size: 32px; }
-        p { color: #888; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
-        input { width: 100%; background: #1A1A1A; border: 1px solid #333; color: #fff; padding: 18px; border-radius: 10px; font-size: 20px; margin-bottom: 20px; outline: none; text-align: center; box-sizing: border-box; }
-        input:focus { border-color: #F5A623; box-shadow: 0 0 10px rgba(245,166,35,0.2); }
-        .btn { background: #25D366; color: #fff; border: none; padding: 18px; border-radius: 10px; font-weight: bold; width: 100%; cursor: pointer; font-size: 16px; transition: all 0.2s; letter-spacing: 1px; }
-        .btn:active { transform: scale(0.96); opacity: 0.9; }
+        body { background: #080808; color: white; font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
+        .card { background: #111; padding: 30px; border-radius: 20px; border: 1px solid #222; width: 100%; max-width: 400px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        h2 { color: #F5A623; margin-bottom: 10px; font-size: 22px; }
+        p { color: #666; font-size: 14px; margin-bottom: 25px; }
+        input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: white; font-size: 18px; margin-bottom: 20px; outline: none; text-align: center; }
+        input:focus { border-color: #25D366; }
+        .btn-send { background: #25D366; color: white; padding: 18px; border-radius: 12px; text-decoration: none; font-weight: bold; display: block; font-size: 16px; border: none; cursor: pointer; width: 100%; transition: transform 0.2s; }
+        .btn-send:active { transform: scale(0.95); }
+        .footer-logo { margin-top: 30px; opacity: 0.5; font-size: 10px; letter-spacing: 2px; }
     </style>
 </head>
 <body>
-    <div class="card">
-        <h1>SEND TO CLIENT</h1>
-        <p>Type the client's mobile number below to open a direct WhatsApp chat.</p>
-        <input type="tel" id="mobileNumber" placeholder="e.g. 082 123 4567" autofocus>
-        <button class="btn" onclick="sendToWhatsApp()">OPEN IN WHATSAPP</button>
-    </div>
 
-    <script>
-        function getParam(name) {
-            return new URLSearchParams(window.location.search).get(name) || '';
+<div class="card">
+    <h2>WhatsApp Dispatch</h2>
+    <p>Enter the client's mobile number below to send their delivery video.</p>
+    
+    <input type="tel" id="phone" placeholder="e.g. 0821234567" autocomplete="off">
+    
+    <button onclick="sendToWhatsApp()" class="btn-send">
+        🚀 OPEN IN WHATSAPP
+    </button>
+</div>
+
+<div class="footer-logo">POWERED BY WHEELS2REELS</div>
+
+<script>
+    function getParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    function sendToWhatsApp() {
+        let phone = document.getElementById('phone').value.replace(/\s+/g, '');
+        
+        // Auto-fix for South African numbers
+        if (phone.startsWith('0')) {
+            phone = '27' + phone.substring(1);
+        }
+        
+        // Clean any non-numeric characters
+        phone = phone.replace(/\D/g, '');
+
+        if (!phone) {
+            alert("Please enter a valid phone number");
+            return;
         }
 
-        function sendToWhatsApp() {
-            let num = document.getElementById('mobileNumber').value.trim();
-            // Clean the number (remove spaces, dashes, etc)
-            num = num.replace(/\D/g, ''); 
-            
-            // South African logic: if it starts with 0, replace with 27
-            if (num.startsWith('0')) { num = '27' + num.substring(1); }
-            
-            if (num.length < 10) { alert('Asseblief, voer 'n geldige nommer in.'); return; }
+        // Get the data passed from the email
+        const name = getParam('name') || "Your Car";
+        const video = getParam('video') || "";
+        const caption = getParam('caption') || "Your cinematic delivery video is ready!";
+        
+        // Create the Link for the client to click
+        const reelLink = `https://brahmmeyer.github.io/Car-Detailers/reel.html?name=${encodeURIComponent(name)}&video=${encodeURIComponent(video)}&caption=${encodeURIComponent(caption)}`;
 
-            const video = getParam('video');
-            const name = getParam('name') || 'Your Car';
-            
-            // The final message
-            const message = `Hi! Your car is ready for collection. Check out your professional delivery video here: https://brahmmeyer.github.io/Car-Detailers/reel.html?name=${encodeURIComponent(name)}%26video=${video}`;
-            
-            // Redirect to WhatsApp Direct API
-            window.location.href = `https://wa.me/${num}?text=${encodeURIComponent(message)}`;
-        }
-    </script>
+        // Build the final message
+        const message = `Hi! Your custom highlight reel from ${name} is ready. View it here: ${reelLink}\n\n${caption}`;
+
+        // MOBILE FIX: Use the 'wa.me' universal link format
+        const finalUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
+        // Open the link
+        window.location.href = finalUrl;
+    }
+</script>
+
 </body>
 </html>
