@@ -23,11 +23,13 @@
 
         .btn-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
         
-        /* FIX: All buttons centered and full-width */
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 24px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; width: 100%; margin-left: auto; margin-right: auto; }
+        /* FULL WIDTH BUTTONS */
+        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 24px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
         
         .btn-review { background: var(--gold); color: #000; }
-        .btn-download { background: transparent; color: var(--text); border: 1px solid var(--subtle); margin-top: 10px; display: none; }
+        
+        /* CENTERED DOWNLOAD BUTTON */
+        .btn-download { background: transparent; color: var(--text); border: 1px solid var(--subtle); margin: 20px auto; display: none; }
         .btn:active { transform: scale(0.98); }
 
         .social-section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; display: none; }
@@ -36,9 +38,9 @@
         .post-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; }
         .post-text { font-size: 14px; line-height: 1.6; color: #ddd; margin-bottom: 15px; white-space: pre-wrap; }
 
-        /* FIX: Logo is now much bigger and centered */
-        .logo-section { text-align: center; padding: 40px 0; display: none; }
-        .logo-section img { max-width: 280px; max-height: 160px; object-fit: contain; opacity: 0.95; }
+        /* BIGGER LOGO - 2X SIZE */
+        .logo-section { text-align: center; padding: 40px 0; display: none; width: 100%; }
+        .logo-section img { width: 100%; max-width: 320px; height: auto; max-height: 200px; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
 
         .footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); }
         .footer-brand { color: var(--gold); font-size: 14px; font-weight: bold; letter-spacing: 2px; }
@@ -85,7 +87,6 @@
         function handleDownload() {
             let videoUrl = getParam('video');
             if (videoUrl) {
-                // Ensure Cloudinary flag is present to force download
                 if (!videoUrl.includes('fl_attachment')) {
                     videoUrl = videoUrl.replace('/upload/', '/upload/fl_attachment/');
                 }
@@ -107,11 +108,10 @@
 
             if (name) document.getElementById('charterName').innerText = name.toUpperCase();
             if (videoUrl) {
-                // Remove fl_attachment for the player so it actually plays
                 document.getElementById('mainVideo').src = videoUrl.replace('fl_attachment/', '');
                 document.getElementById('videoWrap').style.display = 'block';
                 document.getElementById('btnGroup').style.display = 'flex';
-                document.getElementById('downloadBtn').style.display = 'flex';
+                document.getElementById('downloadBtn').style.display = 'block';
             }
             if (caption) {
                 document.getElementById('socialSection').style.display = 'block';
