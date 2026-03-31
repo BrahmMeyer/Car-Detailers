@@ -6,126 +6,42 @@
     <title>Your Delivery Video — Wheels2Reels</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #F5A623; --gold-dark: #C4841A; --bg: #080808; --surface: #111111; --surface2: #1A1A1A; --border: #222222; --text: #FFFFFF; --muted: #666666; --subtle: #333333; }
+        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
-        
-        .header { padding: 40px 24px 30px; text-align: center; border-bottom: 1px solid var(--border); }
-        .business-name { font-family: 'Bebas Neue', sans-serif; font-size: clamp(32px, 8vw, 52px); letter-spacing: 2px; line-height: 1; margin-bottom: 6px; }
-        .tagline { font-size: 12px; color: var(--muted); letter-spacing: 4px; text-transform: uppercase; }
-        .gold-line { width: 40px; height: 2px; background: var(--gold); margin: 16px auto 0; }
-
-        .content { max-width: 480px; margin: 0 auto; padding: 24px 16px 60px; }
-        
-        .video-wrap { position: relative; border-radius: 16px; overflow: hidden; background: #000; margin-bottom: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.8); display: none; border: 1px solid var(--border); }
+        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); padding-bottom: 50px; }
+        .header { padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border); }
+        .business-name { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 2px; color: var(--gold); }
+        .content { max-width: 450px; margin: 0 auto; padding: 20px; }
+        .video-wrap { border-radius: 16px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         video { width: 100%; display: block; }
-        .video-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(245,166,35,0.4); color: var(--gold); font-size: 10px; font-weight: 700; letter-spacing: 2px; padding: 6px 12px; border-radius: 20px; z-index: 10; }
-
-        .btn-group { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-        
-        /* FULL WIDTH BUTTONS */
-        .btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 18px 24px; border-radius: 12px; font-size: 15px; font-weight: 700; text-decoration: none; transition: all 0.2s; border: none; cursor: pointer; width: 100%; box-sizing: border-box; }
-        
+        .btn { display: block; width: 100%; padding: 18px; text-align: center; border-radius: 12px; font-weight: bold; text-decoration: none; margin-bottom: 15px; cursor: pointer; border: none; font-size: 16px; }
         .btn-review { background: var(--gold); color: #000; }
-        
-        /* CENTERED DOWNLOAD BUTTON */
-        .btn-download { background: transparent; color: var(--text); border: 1px solid var(--subtle); margin: 20px auto; display: none; }
-        .btn:active { transform: scale(0.98); }
-
-        .social-section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; display: none; }
-        .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
-        .section-label::after { content: ''; flex: 1; height: 1px; background: var(--subtle); }
-        .post-card { background: var(--surface2); border: 1px solid var(--border); border-radius: 12px; padding: 20px; cursor: pointer; }
-        .post-text { font-size: 14px; line-height: 1.6; color: #ddd; margin-bottom: 15px; white-space: pre-wrap; }
-
-        /* BIGGER LOGO - 2X SIZE */
-        .logo-section { text-align: center; padding: 40px 0; display: none; width: 100%; }
-        .logo-section img { width: 100%; max-width: 320px; height: auto; max-height: 200px; object-fit: contain; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.5)); }
-
-        .footer { text-align: center; padding: 40px 20px; border-top: 1px solid var(--border); }
-        .footer-brand { color: var(--gold); font-size: 14px; font-weight: bold; letter-spacing: 2px; }
+        .btn-download { background: transparent; color: #fff; border: 1px solid #444; }
+        /* BIG LOGO FIX */
+        .logo-section { text-align: center; padding: 40px 10px; }
+        .logo-section img { width: 100%; max-width: 350px; height: auto; filter: drop-shadow(0 5px 15px rgba(0,0,0,0.3)); }
     </style>
 </head>
 <body>
-    <div class="header">
-        <div class="business-name" id="charterName">WHEELS2REELS</div>
-        <div class="tagline">Automated Delivery</div>
-        <div class="gold-line"></div>
-    </div>
+    <div class="header"><div class="business-name" id="bizName">LOADING...</div></div>
     <div class="content">
-        <div class="video-wrap" id="videoWrap">
-            <div class="video-badge">Cinematic 4K</div>
-            <video id="mainVideo" controls playsinline preload="metadata"></video>
-        </div>
-        <div class="btn-group" id="btnGroup" style="display:none;">
-            <a id="reviewBtn" href="#" class="btn btn-review" style="display:none;" target="_blank">⭐ LEAVE A REVIEW</a>
-        </div>
-        <div class="social-section" id="socialSection">
-            <div class="section-label">Suggested Caption</div>
-            <div class="post-card" onclick="copyPost()">
-                <div class="post-text" id="post1txt"></div>
-                <div style="font-size:11px; color:var(--gold); font-weight:bold; text-align:right;">TAP TO COPY 📋</div>
-            </div>
-        </div>
-        
-        <button id="downloadBtn" class="btn btn-download" onclick="handleDownload()">⬇️ DOWNLOAD VIDEO</button>
-        
-        <div class="logo-section" id="logoSection">
-            <img id="charterLogo" src=""/>
-        </div>
+        <div class="video-wrap"><video id="mainVideo" controls playsinline></video></div>
+        <a id="reviewLink" href="#" class="btn btn-review">⭐ LEAVE A REVIEW</a>
+        <button class="btn btn-download" onclick="handleDownload()">⬇️ DOWNLOAD VIDEO</button>
+        <div class="logo-section"><img id="bizLogo" src=""></div>
     </div>
-    <div class="footer"><div class="footer-brand">POWERED BY WHEELS2REELS</div></div>
-
     <script>
-        function getParam(name) { return new URLSearchParams(window.location.search).get(name); }
+        const params = new URLSearchParams(window.location.search);
+        document.getElementById('bizName').innerText = (params.get('name') || 'WHEELS2REELS').toUpperCase();
+        document.getElementById('mainVideo').src = params.get('video')?.replace('fl_attachment/', '') || '';
+        document.getElementById('reviewLink').href = params.get('review') || '#';
+        document.getElementById('bizLogo').src = params.get('logo') || '';
         
-        function copyPost() {
-            const text = document.getElementById('post1txt').innerText;
-            navigator.clipboard.writeText(text).then(() => alert('Copied to clipboard!'));
-        }
-
         function handleDownload() {
-            let videoUrl = getParam('video');
-            if (videoUrl) {
-                if (!videoUrl.includes('fl_attachment')) {
-                    videoUrl = videoUrl.replace('/upload/', '/upload/fl_attachment/');
-                }
-                const link = document.createElement('a');
-                link.href = videoUrl;
-                link.setAttribute('download', 'DeliveryVideo.mp4');
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
+            let url = params.get('video');
+            if (!url.includes('fl_attachment')) url = url.replace('/upload/', '/upload/fl_attachment/');
+            const a = document.createElement('a'); a.href = url; a.download = 'Video.mp4'; a.click();
         }
-
-        window.onload = function() {
-            const name = getParam('name');
-            const videoUrl = getParam('video');
-            const caption = getParam('caption');
-            const review = getParam('review');
-            const logo = getParam('logo');
-
-            if (name) document.getElementById('charterName').innerText = name.toUpperCase();
-            if (videoUrl) {
-                document.getElementById('mainVideo').src = videoUrl.replace('fl_attachment/', '');
-                document.getElementById('videoWrap').style.display = 'block';
-                document.getElementById('btnGroup').style.display = 'flex';
-                document.getElementById('downloadBtn').style.display = 'block';
-            }
-            if (caption) {
-                document.getElementById('socialSection').style.display = 'block';
-                document.getElementById('post1txt').innerText = decodeURIComponent(caption);
-            }
-            if (review) {
-                document.getElementById('reviewBtn').href = review;
-                document.getElementById('reviewBtn').style.display = 'flex';
-            }
-            if (logo) {
-                document.getElementById('charterLogo').src = logo;
-                document.getElementById('logoSection').style.display = 'block';
-            }
-        };
     </script>
 </body>
 </html>
