@@ -1,130 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Sender — Rod2Reel</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gold: #F5A623;
-            --bg: #080808;
-            --surface: #111111;
-            --border: #222222;
-            --text: #FFFFFF;
-            --green: #25D366;
-        }
-
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'DM Sans', sans-serif; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            min-height: 100vh; 
-            margin: 0; 
-            padding: 20px; 
-            text-align: center; 
-        }
-
-        .card { 
-            background: var(--surface); 
-            padding: 35px 30px; 
-            border-radius: 24px; 
-            border: 1px solid var(--border); 
-            width: 100%; 
-            max-width: 400px; 
-            box-shadow: 0 25px 50px rgba(0,0,0,0.6); 
-            transition: transform 0.2s, box-shadow 0.2s; 
-        }
-        .card:hover { 
-            transform: translateY(-3px); 
-            box-shadow: 0 30px 60px rgba(0,0,0,0.7); 
-        }
-
-        h2 { 
-            color: var(--gold); 
-            margin-bottom: 12px; 
-            font-size: 24px; 
-            letter-spacing: 1px;
-        }
-
-        p { 
-            color: #bbb; 
-            font-size: 14px; 
-            margin-bottom: 25px; 
-            line-height: 1.5; 
-        }
-
-        input { 
-            width: 100%; 
-            padding: 16px; 
-            border-radius: 14px; 
-            border: 1px solid #333; 
-            background: #1a1a1a; 
-            color: var(--text); 
-            font-size: 18px; 
-            margin-bottom: 20px; 
-            outline: none; 
-            text-align: center; 
-            transition: border-color 0.2s, box-shadow 0.2s; 
-        }
-        input:focus { 
-            border-color: var(--green); 
-            box-shadow: 0 0 8px rgba(37,211,102,0.5); 
-        }
-
-        .btn-send { 
-            background: linear-gradient(135deg, #25D366, #1DA851); 
-            color: white; 
-            padding: 18px; 
-            border-radius: 14px; 
-            text-decoration: none; 
-            font-weight: bold; 
-            display: block; 
-            font-size: 16px; 
-            border: none; 
-            cursor: pointer; 
-            width: 100%; 
-            transition: transform 0.2s, box-shadow 0.2s; 
-        }
-        .btn-send:hover { 
-            box-shadow: 0 8px 20px rgba(37,211,102,0.6); 
-        }
-        .btn-send:active { 
-            transform: scale(0.97); 
-        }
-
-        .footer-logo { 
-            margin-top: 30px; 
-            color: var(--gold); 
-            font-size: 11px; 
-            letter-spacing: 1.5px; 
-            line-height: 1.5; 
-        }
-    </style>
-</head>
-<body>
-
-<div class="card">
-    <h2>WhatsApp Dispatch</h2>
-    <p>Enter the client's mobile number below to send their delivery video.</p>
-    
-    <input type="tel" id="phone" placeholder="e.g. 0821234567" autocomplete="off">
-    
-    <button onclick="sendToWhatsApp()" class="btn-send">
-        🚀 OPEN IN WHATSAPP
-    </button>
-</div>
-
-<div class="footer-logo">
-    POWERED BY ROD2REEL<br>
-    hello@rod2reel.com<br>
-    +27 (0)68 364 4061
-</div>
-
 <script>
     function getParam(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -142,27 +15,29 @@
         // Clean any non-numeric characters
         phone = phone.replace(/\D/g, '');
 
-        if (!phone) {
+        if (phone.length < 9) {
             alert("Please enter a valid phone number");
             return;
         }
 
-        // Get the data passed from the email
-        const name = getParam('name') || "Your Car";
+        // Get data from URL parameters
+        const bizName = getParam('name') || "Your Car";
         const video = getParam('video') || "";
+        const logo = getParam('logo') || "";
+        const review = getParam('review') || "";
         const caption = getParam('post1') || "Your cinematic delivery video is ready!";
 
-        // Link to your custom domain
-        const reelLink = `https://delivery.rod2reel.com/reel.html?name=${encodeURIComponent(name)}&video=${encodeURIComponent(video)}&post1=${encodeURIComponent(caption)}`;
+        // CONSTRUCT THE CLEAN CLIENT LINK
+        // This link is what WhatsApp uses to generate that nice preview card
+        const reelLink = `https://delivery.rod2reel.com/reel.html?name=${encodeURIComponent(bizName)}&video=${encodeURIComponent(video)}&logo=${encodeURIComponent(logo)}&review=${encodeURIComponent(review)}&post1=${encodeURIComponent(caption)}`;
 
-        // WhatsApp message
-        const message = `Hi! Your car is ready 🚗\n🎬 Watch it here: ${reelLink}`;
+        // THE FINAL MESSAGE (REMOVED REDUNDANT URL AND TEXT)
+        // By sending only the link, WhatsApp generates the preview card
+        // The business owner can now just type their own message before hitting send.
+        const message = `${reelLink}`;
 
+        // OPEN WHATSAPP
         const finalUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-
         window.location.href = finalUrl;
     }
 </script>
-
-</body>
-</html>
