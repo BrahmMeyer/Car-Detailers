@@ -39,18 +39,18 @@ body {
     font-size:28px;
     color:var(--gold);
     letter-spacing:2px;
-    margin-bottom:10px;
 }
 
 .loader p {
     font-size:12px;
     color:#777;
+    margin-top:10px;
 }
 
-/* MAIN CONTENT */
+/* MAIN */
 #main {
     display:none;
-    animation:fadeIn 1s ease forwards;
+    animation:fadeIn 0.8s ease forwards;
 }
 
 @keyframes fadeIn {
@@ -71,7 +71,7 @@ body {
     color:var(--gold);
 }
 
-/* VIDEO */
+/* CONTENT */
 .container {
     max-width:480px;
     margin:auto;
@@ -101,15 +101,12 @@ video {
     margin-bottom:12px;
     cursor:pointer;
     border:none;
-    transition:0.2s;
 }
 
 .btn-primary {
     background:var(--gold);
     color:#000;
 }
-
-.btn-primary:active { transform:scale(0.97); }
 
 .btn-secondary {
     background:transparent;
@@ -144,7 +141,6 @@ video {
 .logo img {
     max-width:260px;
     margin-top:30px;
-    opacity:0.95;
 }
 
 /* ERROR */
@@ -158,7 +154,7 @@ video {
 
 <body>
 
-<!-- LOADING SCREEN -->
+<!-- LOADER -->
 <div id="loader" class="loader">
     <h1>Preparing Your Delivery...</h1>
     <p id="debug"></p>
@@ -195,7 +191,7 @@ video {
 <script>
 const id = new URLSearchParams(window.location.search).get('id');
 
-const TOKEN = 'YOUR_AIRTABLE_TOKEN_HERE';
+const TOKEN = 'patZyvJl4u5MSDTgW.975f3c860d8c4cf7727459583099472585b6656d13e2529a578212eb54c6e4e9';
 const BASE = 'appGGs07d4FB6htwg';
 const TABLE = 'tblCYkMaAOHrX0nwN';
 
@@ -211,30 +207,31 @@ async function load() {
 
         const data = await res.json();
 
-        if (!data.records.length) throw new Error("No record found");
+        if (!data.records) throw new Error(JSON.stringify(data));
+        if (data.records.length === 0) throw new Error("No matching record");
 
         const f = data.records[0].fields;
 
-        bizName.innerText = (f['Charter Name'] || '').toUpperCase();
-        video.src = f['Video URL'];
+        document.getElementById('bizName').innerText = (f['Charter Name'] || '').toUpperCase();
+        document.getElementById('video').src = f['Video URL'];
 
-        if (f['Logo']) logo.src = f['Logo'];
+        if (f['Logo']) document.getElementById('logo').src = f['Logo'];
 
         if (f['Social Post 1']) {
-            captionBox.style.display = 'block';
-            captionText.innerText = f['Social Post 1'];
+            document.getElementById('captionBox').style.display = 'block';
+            document.getElementById('captionText').innerText = f['Social Post 1'];
         }
 
-        loader.style.display = 'none';
-        main.style.display = 'block';
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
 
     } catch(e) {
-        debug.innerText = "Error: " + e.message + " | ID: " + id;
+        document.getElementById('debug').innerText = "Error: " + e.message + " | ID: " + id;
     }
 }
 
 function download() {
-    let u = video.src;
+    let u = document.getElementById('video').src;
     if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
     const a = document.createElement('a');
     a.href = u;
@@ -243,7 +240,7 @@ function download() {
 }
 
 if(id) load();
-else debug.innerText = "Missing ID";
+else document.getElementById('debug').innerText = "Missing ID";
 </script>
 
 </body>
