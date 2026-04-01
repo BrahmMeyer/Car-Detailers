@@ -1,3 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Dispatch — Rod2Reel</title>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; --green: #25D366; }
+        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
+        .card { background: var(--surface); padding: 35px 30px; border-radius: 24px; border: 1px solid var(--border); width: 100%; max-width: 400px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
+        h2 { color: var(--gold); margin-bottom: 12px; font-size: 24px; letter-spacing: 1px; }
+        p { color: #bbb; font-size: 14px; margin-bottom: 25px; line-height: 1.5; }
+        input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid #333; background: #1a1a1a; color: var(--text); font-size: 20px; margin-bottom: 20px; outline: none; text-align: center; }
+        input:focus { border-color: var(--green); }
+        .btn-send { background: linear-gradient(135deg, #25D366, #1DA851); color: white; padding: 20px; border-radius: 14px; text-decoration: none; font-weight: bold; display: block; font-size: 16px; border: none; cursor: pointer; width: 100%; }
+        .footer-logo { margin-top: 30px; color: var(--gold); font-size: 11px; letter-spacing: 1.5px; opacity: 0.8; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>WhatsApp Dispatch</h2>
+    <p>Enter the client's mobile number below.</p>
+    
+    <input type="tel" id="phone" placeholder="082 123 4567" autocomplete="off">
+    
+    <button type="button" onclick="sendToWhatsApp()" class="btn-send">
+        🚀 OPEN IN WHATSAPP
+    </button>
+</div>
+
+<div class="footer-logo">
+    POWERED BY ROD2REEL<br>
+    hello@rod2reel.com
+</div>
+
 <script>
     function getParam(name) {
         const urlParams = new URLSearchParams(window.location.search);
@@ -5,14 +42,13 @@
     }
 
     function sendToWhatsApp() {
-        let phone = document.getElementById('phone').value.replace(/\s+/g, '');
+        // 1. Get and clean the phone number
+        let phoneInput = document.getElementById('phone').value;
+        let phone = phoneInput.replace(/\s+/g, '');
         
-        // Auto-fix for South African numbers
         if (phone.startsWith('0')) {
             phone = '27' + phone.substring(1);
         }
-        
-        // Clean any non-numeric characters
         phone = phone.replace(/\D/g, '');
 
         if (phone.length < 9) {
@@ -20,24 +56,23 @@
             return;
         }
 
-        // Get data from URL parameters
+        // 2. Build the URL parameters safely
         const bizName = getParam('name') || "Your Car";
         const video = getParam('video') || "";
         const logo = getParam('logo') || "";
         const review = getParam('review') || "";
         const caption = getParam('post1') || "Your cinematic delivery video is ready!";
 
-        // CONSTRUCT THE CLEAN CLIENT LINK
-        // This link is what WhatsApp uses to generate that nice preview card
+        // 3. Create the destination link
         const reelLink = `https://delivery.rod2reel.com/reel.html?name=${encodeURIComponent(bizName)}&video=${encodeURIComponent(video)}&logo=${encodeURIComponent(logo)}&review=${encodeURIComponent(review)}&post1=${encodeURIComponent(caption)}`;
 
-        // THE FINAL MESSAGE (REMOVED REDUNDANT URL AND TEXT)
-        // By sending only the link, WhatsApp generates the preview card
-        // The business owner can now just type their own message before hitting send.
-        const message = `${reelLink}`;
+        // 4. Create the final WhatsApp URL (Link only to trigger the Preview Card)
+        const finalUrl = `https://wa.me/${phone}?text=${encodeURIComponent(reelLink)}`;
 
-        // OPEN WHATSAPP
-        const finalUrl = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+        // 5. Execute the redirect
         window.location.href = finalUrl;
     }
 </script>
+
+</body>
+</html>
