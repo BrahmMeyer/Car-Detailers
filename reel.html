@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Delivery — Rod2Reel</title>
+    
+    <title>Your Vehicle is Ready 🚗</title>
+    <meta property="og:title" content="Your Vehicle is Ready 🚗">
+    <meta property="og:description" content="Watch your cinematic video reel at delivery.rod2reel.com">
+    <meta property="og:type" content="website">
+
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -204,7 +209,6 @@
 <script>
     const id = new URLSearchParams(window.location.search).get('id');
 
-    // Token and Base Info
     const TOKEN = 'patZyvJl4u5MSDTgW.975f3c860d8c4cf7727459583099472585b6656d13e2529a578212eb54c6e4e9';
     const BASE = 'appGGs07d4FB6htwg';
     const TABLE = 'tblCYkMaAOHrX0nwN';
@@ -227,7 +231,6 @@
 
             const f = data.records[0].fields;
 
-            // Set content
             document.getElementById('bizName').innerText = (f['Charter Name'] || 'ROD2REEL').toUpperCase();
             document.getElementById('video').src = f['Video URL'];
 
@@ -236,7 +239,6 @@
                 document.getElementById('captionText').innerText = f['Social Post 1'];
             }
 
-            // Apple-style transition
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
 
@@ -255,7 +257,6 @@
     }
 
     if(id) load();
-    else document.getElementById('debug').innerText = "Missing ID";
 </script>
 
 </body>
