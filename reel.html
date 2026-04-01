@@ -3,40 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Delivery Video — Wheels2Reels</title>
+    <title>Your Car is Ready 🚗</title>
+
+    <!-- FONTS -->
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- DYNAMIC OG META TAGS -->
+    <meta property="og:title" content="Your Car is Ready 🚗" id="og-title">
+    <meta property="og:description" content="Watch your cinematic delivery video" id="og-desc">
+    <meta property="og:image" content="" id="og-image">
+    <meta property="og:url" content="" id="og-url">
+    <meta property="og:type" content="video.other">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Your Car is Ready 🚗" id="tw-title">
+    <meta name="twitter:description" content="Watch your cinematic delivery video" id="tw-desc">
+    <meta name="twitter:image" content="" id="tw-image">
+
     <style>
         :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); padding-bottom: 60px; text-align: center; }
-        
-        .header { padding: 50px 20px 30px; border-bottom: 1px solid var(--border); }
-        .biz-name { font-family: 'Bebas Neue', sans-serif; font-size: 48px; letter-spacing: 3px; color: var(--gold); line-height: 1; }
-        
-        .content { max-width: 480px; margin: 0 auto; padding: 20px; }
-        .video-wrap { border-radius: 20px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 30px; box-shadow: 0 20px 50px rgba(0,0,0,0.7); background: #000; }
-        video { width: 100%; display: block; }
-        
-        .btn { display: block; width: 100%; padding: 20px; border-radius: 14px; font-weight: 800; text-decoration: none; margin-bottom: 15px; font-size: 16px; border: none; cursor: pointer; }
-        .btn-review { background: var(--gold); color: #000; }
-        .btn-download { background: transparent; color: #fff; border: 1px solid #444; }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); text-align:center; padding-bottom:60px; }
 
-        /* SUGGESTED CAPTION SECTION */
-        .social-section { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px; margin-bottom: 24px; text-align: left; }
-        .section-label { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-        .post-card { background: #1a1a1a; border-radius: 10px; padding: 15px; cursor: pointer; }
-        .post-text { font-size: 14px; color: #ddd; line-height: 1.5; }
+        .header { padding:50px 20px 30px; border-bottom:1px solid var(--border); }
+        .biz-name { font-family:'Bebas Neue', sans-serif; font-size:48px; letter-spacing:3px; color: var(--gold); line-height:1; }
 
-        /* 2X LOGO SIZE */
-        .logo-section { padding: 50px 20px; }
-        .logo-section img { width: 100%; max-width: 380px; height: auto; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+        .content { max-width:480px; margin:0 auto; padding:20px; }
+        .video-wrap { border-radius:20px; overflow:hidden; border:1px solid var(--border); margin-bottom:30px; box-shadow:0 20px 50px rgba(0,0,0,0.7); background:#000; }
+        video { width:100%; display:block; }
+
+        .btn { display:block; width:100%; padding:20px; border-radius:14px; font-weight:800; text-decoration:none; margin-bottom:15px; font-size:16px; border:none; cursor:pointer; }
+        .btn-review { background: var(--gold); color:#000; }
+        .btn-download { background:transparent; color:#fff; border:1px solid #444; }
+
+        .social-section { background: var(--surface); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:24px; text-align:left; }
+        .section-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color: var(--gold); margin-bottom:12px; }
+        .post-card { background:#1a1a1a; border-radius:10px; padding:15px; cursor:pointer; }
+        .post-text { font-size:14px; color:#ddd; line-height:1.5; }
+
+        .logo-section { padding:50px 20px; }
+        .logo-section img { width:100%; max-width:380px; height:auto; filter:drop-shadow(0 10px 20px rgba(0,0,0,0.5)); }
+
+        .footer { margin-top:40px; border-top:1px solid var(--border); padding-top:20px; text-align:center; }
+        .footer p { margin:4px 0; }
+        .footer .brand { font-size:12px; color: var(--gold); letter-spacing:2px; margin-bottom:6px; }
+        .footer .contact { font-size:11px; color:#666; }
     </style>
 </head>
 <body>
     <div class="header"><div class="biz-name" id="bizName">LOADING...</div></div>
+
     <div class="content">
-        <div class="video-wrap"><video id="mainVideo" controls playsinline></video></div>
-        
+        <!-- VIDEO -->
+        <div class="video-wrap">
+            <video id="mainVideo" controls playsinline></video>
+        </div>
+
+        <!-- SOCIAL / POST -->
         <div class="social-section" id="socialSection" style="display:none;">
             <div class="section-label">Copy for your Instagram:</div>
             <div class="post-card" onclick="copyText()">
@@ -45,36 +67,84 @@
             </div>
         </div>
 
+        <!-- REVIEW / DOWNLOAD -->
         <a id="reviewLink" href="#" class="btn btn-review" target="_blank" style="display:none;">⭐ LEAVE A REVIEW</a>
         <button class="btn btn-download" onclick="handleDownload()">⬇️ DOWNLOAD VIDEO</button>
-        
+
+        <!-- LOGO -->
         <div class="logo-section"><img id="bizLogo" src=""></div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+        <p class="brand">POWERED BY ROD2REEL</p>
+        <p class="contact">hello@rod2reel.com</p>
+        <p class="contact">+27 (0)68 364 4061</p>
     </div>
 
     <script>
         const p = new URLSearchParams(window.location.search);
-        document.getElementById('bizName').innerText = (p.get('name') || 'WHEELS2REELS').toUpperCase();
-        document.getElementById('mainVideo').src = p.get('video')?.replace('fl_attachment/', '') || '';
+
+        // BUSINESS NAME
+        const bizName = (p.get('name') || 'ROD2REEL').toUpperCase();
+        document.getElementById('bizName').innerText = bizName;
+
+        // VIDEO
+        const videoSrc = p.get('video')?.replace('fl_attachment/', '') || '';
+        document.getElementById('mainVideo').src = videoSrc;
+
+        // LOGO
         document.getElementById('bizLogo').src = p.get('logo') || '';
-        
-        if(p.get('caption')) {
+
+        // SOCIAL POST / CAPTION
+        if(p.get('post1')) {
             document.getElementById('socialSection').style.display = 'block';
-            document.getElementById('postText').innerText = decodeURIComponent(p.get('caption'));
+            document.getElementById('postText').innerText = decodeURIComponent(p.get('post1'));
         }
+
+        // REVIEW BUTTON
         if(p.get('review')) {
             document.getElementById('reviewLink').href = p.get('review');
             document.getElementById('reviewLink').style.display = 'block';
         }
 
+        // COPY SOCIAL TEXT
         function copyText() {
             const t = document.getElementById('postText').innerText;
             navigator.clipboard.writeText(t).then(() => alert('Caption copied!'));
         }
 
+        // DOWNLOAD VIDEO
         function handleDownload() {
             let u = p.get('video');
             if (!u.includes('fl_attachment')) u = u.replace('/upload/', '/upload/fl_attachment/');
             const a = document.createElement('a'); a.href = u; a.download = 'Cinematic_Reel.mp4'; a.click();
+        }
+
+        // DYNAMIC OG META TAGS
+        const ogTitle = document.getElementById('og-title');
+        const ogDesc = document.getElementById('og-desc');
+        const ogImage = document.getElementById('og-image');
+        const ogUrl = document.getElementById('og-url');
+
+        const twTitle = document.getElementById('tw-title');
+        const twDesc = document.getElementById('tw-desc');
+        const twImage = document.getElementById('tw-image');
+
+        const currentUrl = window.location.href;
+
+        ogTitle.setAttribute('content', `${bizName} 🚗 Your Delivery Video`);
+        ogDesc.setAttribute('content', 'Watch your cinematic delivery video.');
+        ogUrl.setAttribute('content', currentUrl);
+
+        twTitle.setAttribute('content', `${bizName} 🚗 Your Delivery Video`);
+        twDesc.setAttribute('content', 'Watch your cinematic delivery video.');
+
+        if(videoSrc) {
+            // Generate thumbnail dynamically (first frame) via Cloudinary
+            const thumb = videoSrc.replace('.mp4', '.jpg').replace('/upload/', '/upload/so_1,w_1080,h_1920,c_fill/');
+            ogImage.setAttribute('content', thumb);
+            twImage.setAttribute('content', thumb);
         }
     </script>
 </body>
