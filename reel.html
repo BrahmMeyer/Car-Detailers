@@ -12,6 +12,7 @@
     <style>
         :root {
             --gold: #F5A623;
+            --blue: #007AFF; /* Electric Blue for the Download Button */
             --bg: #080808;
             --surface: #111;
             --border: #222;
@@ -100,8 +101,24 @@
             display: block;
         }
 
-        .btn-primary { background: var(--gold); color: #000; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #333; }
+        .btn:active { transform: scale(0.96); }
+
+        /* PRIMARY REVIEW BUTTON (GOLD) */
+        .btn-primary { 
+            background: var(--gold); 
+            color: #000; 
+            text-transform: uppercase; 
+            letter-spacing: 1px; 
+        }
+
+        /* DOWNLOAD BUTTON (BLUE) */
+        .btn-blue { 
+            background: var(--blue); 
+            color: #fff; 
+            text-transform: uppercase; 
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+        }
 
         .footer {
             margin-top: 50px;
@@ -133,7 +150,7 @@
 
         <a id="reviewBtn" href="https://xternalshine.co.za/" class="btn btn-primary">⭐ LEAVE US A REVIEW</a>
         
-        <button class="btn btn-secondary" onclick="download()">⬇ DOWNLOAD VIDEO</button>
+        <button class="btn btn-blue" onclick="download()">⬇ DOWNLOAD VIDEO</button>
 
         <div class="footer">
             <div class="footer-main">POWERED BY ROD2REEL</div>
@@ -168,15 +185,15 @@
 
             const f = data.records[0].fields;
 
-            // 1. Business Name from Airtable
+            // 1. Business Name
             if(f['Charter Name']) {
                 document.getElementById('bizName').innerText = f['Charter Name'].toUpperCase();
             }
             
-            // 2. Video URL
+            // 2. Video Source
             document.getElementById('video').src = f['Video URL'];
 
-            // 3. Dynamic Review Link from "Review" column
+            // 3. Review Link
             if (f['Review']) {
                 document.getElementById('reviewBtn').href = f['Review'];
             }
