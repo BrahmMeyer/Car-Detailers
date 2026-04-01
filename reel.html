@@ -1,110 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Delivery Video — Rod2Reel</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: var(--bg); font-family: 'DM Sans', sans-serif; color: var(--text); text-align: center; padding-bottom: 60px; overflow-x: hidden; }
-        .loader-wrap { height: 85vh; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .loader-text { font-family: 'Bebas Neue'; font-size: 28px; color: var(--gold); letter-spacing: 4px; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
-        #mainContent { display: none; animation: fadeIn 0.8s ease-in; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .header { padding: 40px 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-        .biz-name { font-family: 'Bebas Neue', sans-serif; font-size: 42px; letter-spacing: 3px; color: var(--gold); line-height: 1.1; }
-        .content { max-width: 480px; margin: 0 auto; padding: 0 20px; }
-        .video-wrap { border-radius: 20px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.8); background: #000; line-height: 0; }
-        video { width: 100%; display: block; border-radius: 18px; }
-        .btn { display: block; width: 100%; padding: 22px; border-radius: 16px; font-weight: 800; text-decoration: none; margin-bottom: 15px; font-size: 16px; border: none; cursor: pointer; transition: all 0.2s ease; }
-        .btn:active { transform: scale(0.96); }
-        .btn-watch { background: var(--gold); color: #000; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 10px 25px rgba(245,166,35,0.25); }
-        .btn-download { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #333; }
-        .logo-section { padding: 40px 20px; margin-top: 20px; }
-        .logo-section img { width: 100%; max-width: 260px; height: auto; filter: drop-shadow(0 10px 15px rgba(0,0,0,0.5)); }
-        .error-msg { color: #666; font-size: 14px; margin-top: 10px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Your Delivery Video — Rod2Reel</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+:root { --gold:#F5A623; --bg:#080808; --border:#222; --text:#fff; }
+
+body { background:var(--bg); color:var(--text); font-family:'DM Sans'; text-align:center; margin:0; }
+
+.loader-wrap { height:85vh; display:flex; align-items:center; justify-content:center; flex-direction:column; }
+
+.loader-text { font-family:'Bebas Neue'; font-size:28px; color:var(--gold); }
+
+#mainContent { display:none; }
+
+.header { padding:40px 20px; border-bottom:1px solid var(--border); }
+
+.biz-name { font-family:'Bebas Neue'; font-size:42px; color:var(--gold); }
+
+.content { max-width:480px; margin:auto; padding:20px; }
+
+.video-wrap { border-radius:20px; overflow:hidden; margin-bottom:20px; box-shadow:0 20px 50px rgba(0,0,0,0.6); }
+
+video { width:100%; display:block; }
+
+.btn { width:100%; padding:18px; margin-bottom:10px; border-radius:12px; cursor:pointer; font-weight:700; }
+
+.btn-watch { background:var(--gold); color:#000; }
+
+.btn-download { background:#111; color:#fff; border:1px solid #333; }
+
+.logo-section img { max-width:260px; margin-top:25px; }
+
+.debug { color:red; font-size:12px; margin-top:15px; }
+</style>
 </head>
+
 <body>
-    <div id="loading" class="loader-wrap">
-        <div id="statusLabel" class="loader-text">PREPARING YOUR REEL...</div>
+
+<div id="loading" class="loader-wrap">
+    <div id="statusLabel" class="loader-text">LOADING...</div>
+    <div id="debug" class="debug"></div>
+</div>
+
+<div id="mainContent">
+    <div class="header">
+        <div id="bizName" class="biz-name"></div>
     </div>
 
-    <div id="mainContent">
-        <div class="header"><div class="biz-name" id="bizName">LOADING...</div></div>
-        <div class="content">
-            <div class="video-wrap"><video id="mainVideo" controls playsinline></video></div>
-            <button class="btn btn-watch" onclick="document.getElementById('mainVideo').play()">🎬 WATCH MY VIDEO</button>
-            <button class="btn btn-download" onclick="handleDownload()">⬇️ DOWNLOAD VIDEO</button>
-            <div class="logo-section"><img id="bizLogo" src="" alt="Logo"></div>
+    <div class="content">
+        <div class="video-wrap">
+            <video id="mainVideo" controls playsinline></video>
+        </div>
+
+        <button class="btn btn-watch" onclick="mainVideo.play()">WATCH VIDEO</button>
+        <button class="btn btn-download" onclick="download()">DOWNLOAD VIDEO</button>
+
+        <div class="logo-section">
+            <img id="logo">
         </div>
     </div>
+</div>
 
-    <script>
-        const p = new URLSearchParams(window.location.search);
-        let rawId = p.get('id');
-        const recordId = rawId ? rawId.replace(/[\[\]\" ]/g, '') : null;
+<script>
+const id = new URLSearchParams(window.location.search).get('id');
 
-        const AIRTABLE_TOKEN = 'patj2fjhAMYzbPIvg';
-        const BASE_ID = 'appGGs07d4FB6htwg';
-        const TABLE_NAME = 'tblCYkMaAOHrX0nwN'; 
+const TOKEN = 'YOUR_AIRTABLE_TOKEN_HERE';
+const BASE = 'appGGs07d4FB6htwg';
+const TABLE = 'tblTZuhuvhLxsfI18';
 
-        async function fetchDelivery() {
-            try {
-                // SEARCH by formId column instead of internal Record ID
-                const searchUrl = `https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}?filterByFormula={formId}='${recordId}'`;
-                
-                const response = await fetch(searchUrl, {
-                    headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
-                });
-                
-                if (!response.ok) throw new Error("Airtable Lookup Error");
+async function load() {
+    try {
+        const formula = encodeURIComponent(`{lookupId}="${id}"`);
+        const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
 
-                const data = await response.json();
-                
-                if (!data.records || data.records.length === 0) {
-                    throw new Error("No record found with that formId");
-                }
+        const res = await fetch(url, {
+            headers: { Authorization: `Bearer ${TOKEN}` },
+            cache: "no-store"
+        });
 
-                const f = data.records[0].fields;
-                const videoUrl = f['Video URL'];
-                const logoUrl = f['Logo']; 
-                const bizName = f['Charter Name'];
+        const data = await res.json();
 
-                if (!videoUrl) {
-                    document.getElementById('statusLabel').innerHTML = "VIDEO NOT READY<br><span class='error-msg'>URL is missing in Airtable</span>";
-                    return;
-                }
-
-                document.getElementById('bizName').innerText = (bizName || 'ROD2REEL').toUpperCase();
-                document.getElementById('mainVideo').src = videoUrl;
-                
-                if (logoUrl) {
-                    document.getElementById('bizLogo').src = Array.isArray(logoUrl) ? logoUrl[0].url : logoUrl;
-                } else {
-                    document.getElementById('bizLogo').style.display = 'none';
-                }
-
-                document.getElementById('loading').style.display = 'none';
-                document.getElementById('mainContent').style.display = 'block';
-
-            } catch (err) {
-                console.error(err);
-                document.getElementById('statusLabel').innerHTML = "VIDEO NOT FOUND<br><span class='error-msg'>Searching for formId: " + recordId + "</span>";
-            }
+        if (!data.records || data.records.length === 0) {
+            throw new Error("No record found for this ID");
         }
 
-        if (recordId) fetchDelivery();
-        else document.getElementById('statusLabel').innerText = "NO ID PROVIDED";
+        const f = data.records[0].fields;
 
-        function handleDownload() {
-            let u = document.getElementById('mainVideo').src;
-            if (u.includes('cloudinary.com')) u = u.replace('/upload/', '/upload/fl_attachment/');
-            const a = document.createElement('a'); a.href = u; a.download = 'MyVideo.mp4'; a.click();
+        document.getElementById('bizName').innerText = (f['Charter Name'] || '').toUpperCase();
+        document.getElementById('mainVideo').src = f['Video URL'];
+
+        if (f['Logo URL']) {
+            document.getElementById('logo').src = f['Logo URL'];
         }
-    </script>
+
+        document.getElementById('loading').style.display = 'none';
+        document.getElementById('mainContent').style.display = 'block';
+
+    } catch (e) {
+        document.getElementById('statusLabel').innerText = "VIDEO NOT FOUND";
+        document.getElementById('debug').innerText = e.message + " | ID: " + id;
+    }
+}
+
+if (id) load();
+else document.getElementById('statusLabel').innerText = "NO ID PROVIDED";
+
+function download(){
+    let u = document.getElementById('mainVideo').src;
+    if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
+    const a = document.createElement('a');
+    a.href = u;
+    a.download = "video.mp4";
+    a.click();
+}
+</script>
+
 </body>
 </html>
