@@ -32,6 +32,7 @@
     <div id="loading" class="loader-wrap">
         <div class="loader-text" id="statusLabel">PREPARING YOUR REEL...</div>
     </div>
+
     <div id="mainContent">
         <div class="header"><div class="biz-name" id="bizName">LOADING...</div></div>
         <div class="content">
@@ -41,36 +42,62 @@
             <div class="logo-section"><img id="bizLogo" src="" alt="Logo"></div>
         </div>
     </div>
+
     <script>
         const p = new URLSearchParams(window.location.search);
         const recordId = p.get('id');
+
+        // YOUR ACTUAL TABLE DETAILS
         const AIRTABLE_TOKEN = 'patj2fjhAMYzbPIvg';
         const BASE_ID = 'appGGs07d4FB6htwg';
-        const TABLE_NAME = 'tblCYkMaAOHrX0nwN';
+        const TABLE_NAME = 'tblCYkMaAOHrX0nwN'; // YOUR DELIVERIES TABLE
 
         async function fetchDelivery() {
             try {
                 const response = await fetch(`https://api.airtable.com/v0/${BASE_ID}/${TABLE_NAME}/${recordId}`, {
                     headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
                 });
+                
                 if (!response.ok) throw new Error();
+
                 const data = await response.json();
                 const f = data.fields;
-                document.getElementById('bizName').innerText = (f['Charter Name'] || 'ROD2REEL').toUpperCase();
-                document.getElementById('mainVideo').src = f['Video URL'];
-                if (f['Logo']) document.getElementById('bizLogo').src = f['Logo'];
-                else document.getElementById('bizLogo').style.display = 'none';
+
+                // Match column names exactly from your "Deliveries" table
+                const videoUrl = f['Video URL'];
+                const logoUrl = f['Logo']; // Verifying from CSV this is the column name
+                const bizName = f['Charter Name'];
+
+                if (!videoUrl) {
+                    document.getElementById('statusLabel').innerHTML = "VIDEO NOT READY<br><span class='error-msg'>URL is missing in Airtable</span>";
+                    return;
+                }
+
+                document.getElementById('bizName').innerText = (bizName || 'ROD2REEL').toUpperCase();
+                document.getElementById('mainVideo').src = videoUrl;
+                
+                if (logoUrl) {
+                    // Handle both URL strings and Airtable attachment arrays
+                    document.getElementById('bizLogo').src = Array.isArray(logoUrl) ? logoUrl[0].url : logoUrl;
+                } else {
+                    document.getElementById('bizLogo').style.display = 'none';
+                }
+
                 document.getElementById('loading').style.display = 'none';
                 document.getElementById('mainContent').style.display = 'block';
+
             } catch (err) {
-                document.getElementById('statusLabel').innerHTML = "VIDEO NOT FOUND";
+                document.getElementById('statusLabel').innerHTML = "VIDEO NOT FOUND<br><span class='error-msg'>Check your Record ID</span>";
             }
         }
+
         if (recordId) fetchDelivery();
+        else document.getElementById('statusLabel').innerText = "NO ID PROVIDED";
+
         function handleDownload() {
             let u = document.getElementById('mainVideo').src;
             if (u.includes('cloudinary.com')) u = u.replace('/upload/', '/upload/fl_attachment/');
-            const a = document.createElement('a'); a.href = u; a.download = 'My_Video.mp4'; a.click();
+            const a = document.createElement('a'); a.href = u; a.download = 'MyVideo.mp4'; a.click();
         }
     </script>
 </body>
