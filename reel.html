@@ -6,7 +6,6 @@
     
     <title>Your Vehicle is Ready 🚗</title>
     <meta property="og:title" content="Your Vehicle is Ready 🚗">
-    <meta property="og:description" content="Watch your cinematic video reel at delivery.rod2reel.com">
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -119,22 +118,41 @@
             box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
         }
 
-        /* CAPTION BOX STYLES */
+        /* CAPTION BOX */
         .caption-box {
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 20px;
             padding: 20px;
-            margin: 15px 0 25px 0; /* Spacing between buttons */
+            margin: 15px 0 25px 0;
             text-align: left;
+            position: relative;
+        }
+
+        .caption-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
         }
 
         .caption-title {
             font-size: 11px;
             letter-spacing: 2px;
             color: var(--gold);
-            margin-bottom: 10px;
             font-weight: bold;
+        }
+
+        .copy-btn {
+            background: rgba(245, 166, 35, 0.1);
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 9px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         .caption-text {
@@ -174,7 +192,10 @@
         <a id="reviewBtn" href="https://xternalshine.co.za/" class="btn btn-primary">⭐ LEAVE US A REVIEW</a>
         
         <div id="captionBox" class="caption-box" style="display:none;">
-            <div class="caption-title">READY TO POST</div>
+            <div class="caption-header">
+                <div class="caption-title">READY TO POST</div>
+                <button class="copy-btn" onclick="copyCaption()">Tap to Copy</button>
+            </div>
             <div id="captionText" class="caption-text"></div>
         </div>
 
@@ -213,20 +234,16 @@
 
             const f = data.records[0].fields;
 
-            // Business Name
             if(f['Charter Name']) {
                 document.getElementById('bizName').innerText = f['Charter Name'].toUpperCase();
             }
             
-            // Video Source
             document.getElementById('video').src = f['Video URL'];
 
-            // Review Link
             if (f['Review']) {
                 document.getElementById('reviewBtn').href = f['Review'];
             }
 
-            // Social Caption (Social Post 1)
             if (f['Social Post 1']) {
                 document.getElementById('captionBox').style.display = 'block';
                 document.getElementById('captionText').innerText = f['Social Post 1'];
@@ -238,6 +255,15 @@
         } catch(e) {
             console.error(e);
         }
+    }
+
+    function copyCaption() {
+        const text = document.getElementById('captionText').innerText;
+        navigator.clipboard.writeText(text).then(() => {
+            const btn = document.querySelector('.copy-btn');
+            btn.innerText = "COPIED!";
+            setTimeout(() => { btn.innerText = "Tap to Copy"; }, 2000);
+        });
     }
 
     function download() {
