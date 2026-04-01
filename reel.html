@@ -1,187 +1,191 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Your Delivery — Rod2Reel</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Delivery — Rod2Reel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #F5A623;
+            --bg: #080808;
+            --surface: #111;
+            --border: #222;
+            --text: #fff;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-<style>
-:root {
-    --gold:#F5A623;
-    --bg:#080808;
-    --surface:#111;
-    --border:#222;
-    --text:#fff;
-}
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            text-align: center;
+            overflow-x: hidden;
+        }
 
-* { margin:0; padding:0; box-sizing:border-box; }
+        /* APPLE-STYLE LOADER */
+        .loader {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
 
-body {
-    background:var(--bg);
-    color:var(--text);
-    font-family:'DM Sans', sans-serif;
-    text-align:center;
-}
+        .loader h1 {
+            font-family: 'Bebas Neue';
+            font-size: 28px;
+            color: var(--gold);
+            letter-spacing: 2px;
+            animation: pulse 1.5s infinite;
+        }
 
-/* LOADER */
-.loader {
-    height:100vh;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-}
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
-.loader h1 {
-    font-family:'Bebas Neue';
-    font-size:28px;
-    color:var(--gold);
-    letter-spacing:2px;
-}
+        /* MAIN CONTENT ANIMATION */
+        #main {
+            display: none;
+            animation: appleFade 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
 
-.loader p {
-    font-size:12px;
-    color:#777;
-    margin-top:10px;
-}
+        @keyframes appleFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-/* MAIN */
-#main {
-    display:none;
-    animation:fadeIn 0.8s ease forwards;
-}
+        /* HEADER */
+        .header {
+            padding: 60px 20px 30px;
+            border-bottom: 1px solid var(--border);
+        }
 
-@keyframes fadeIn {
-    from { opacity:0; transform:translateY(15px); }
-    to { opacity:1; transform:translateY(0); }
-}
+        .biz-name {
+            font-family: 'Bebas Neue';
+            font-size: 48px;
+            letter-spacing: 3px;
+            color: var(--gold);
+        }
 
-/* HEADER */
-.header {
-    padding:50px 20px 25px;
-    border-bottom:1px solid var(--border);
-}
+        /* CONTENT */
+        .container {
+            max-width: 480px;
+            margin: auto;
+            padding: 20px;
+        }
 
-.biz-name {
-    font-family:'Bebas Neue';
-    font-size:46px;
-    letter-spacing:3px;
-    color:var(--gold);
-}
+        .video-wrap {
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
+            margin-bottom: 30px;
+            background: #000;
+            border: 1px solid var(--border);
+        }
 
-/* CONTENT */
-.container {
-    max-width:480px;
-    margin:auto;
-    padding:20px;
-}
+        video {
+            width: 100%;
+            display: block;
+        }
 
-.video-wrap {
-    border-radius:22px;
-    overflow:hidden;
-    box-shadow:0 25px 60px rgba(0,0,0,0.7);
-    margin-bottom:25px;
-    background:#000;
-}
+        /* BUTTONS */
+        .btn {
+            width: 100%;
+            padding: 20px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 15px;
+            margin-bottom: 12px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s ease;
+        }
 
-video {
-    width:100%;
-    display:block;
-}
+        .btn:active {
+            transform: scale(0.96);
+        }
 
-/* BUTTONS */
-.btn {
-    width:100%;
-    padding:18px;
-    border-radius:14px;
-    font-weight:700;
-    font-size:15px;
-    margin-bottom:12px;
-    cursor:pointer;
-    border:none;
-    transition:0.2s;
-}
+        .btn-primary {
+            background: var(--gold);
+            color: #000;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
 
-.btn:active {
-    transform:scale(0.97);
-}
+        .btn-secondary {
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            border: 1px solid #333;
+        }
 
-.btn-primary {
-    background:var(--gold);
-    color:#000;
-}
+        /* CAPTION */
+        .caption-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 25px 0;
+            text-align: left;
+        }
 
-.btn-secondary {
-    background:transparent;
-    color:#fff;
-    border:1px solid #333;
-}
+        .caption-title {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
 
-/* CAPTION */
-.caption-box {
-    background:var(--surface);
-    border:1px solid var(--border);
-    border-radius:16px;
-    padding:18px;
-    margin:20px 0;
-    text-align:left;
-}
+        .caption-text {
+            font-size: 14px;
+            color: #ddd;
+            line-height: 1.6;
+        }
 
-.caption-title {
-    font-size:11px;
-    letter-spacing:2px;
-    color:var(--gold);
-    margin-bottom:10px;
-}
+        /* PREMIUM FOOTER */
+        .footer {
+            margin-top: 50px;
+            padding-bottom: 60px;
+            border-top: 1px solid var(--border);
+            padding-top: 30px;
+        }
 
-.caption-text {
-    font-size:14px;
-    color:#ddd;
-    line-height:1.5;
-}
+        .footer-main {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
 
-/* FOOTER */
-.footer {
-    margin-top:40px;
-    text-align:center;
-}
-
-.footer-main {
-    font-size:11px;
-    letter-spacing:2px;
-    color:var(--gold);
-    margin-bottom:8px;
-}
-
-.footer-sub {
-    font-size:12px;
-    color:#777;
-}
-</style>
+        .footer-sub {
+            font-size: 12px;
+            color: #666;
+            margin: 3px 0;
+            text-decoration: none;
+            display: block;
+        }
+    </style>
 </head>
 
 <body>
 
 <div id="loader" class="loader">
     <h1>Preparing Your Delivery...</h1>
-    <p id="debug"></p>
+    <p id="debug" style="font-size: 10px; color: #333; margin-top: 10px;"></p>
 </div>
 
 <div id="main">
-
     <div class="header">
         <div id="bizName" class="biz-name"></div>
     </div>
 
     <div class="container">
-
         <div class="video-wrap">
-            <video id="video" controls playsinline muted></video>
+            <video id="video" controls playsinline></video>
         </div>
 
-        <button class="btn btn-primary" onclick="video.play()">▶ PLAY VIDEO</button>
+        <button class="btn btn-primary" onclick="document.getElementById('video').play()">▶ PLAY VIDEO</button>
         <button class="btn btn-secondary" onclick="download()">⬇ DOWNLOAD VIDEO</button>
 
         <div id="captionBox" class="caption-box" style="display:none;">
@@ -194,62 +198,64 @@ video {
             <div class="footer-sub">hello@rod2reel.com</div>
             <div class="footer-sub">+27 (0)68 364 4061</div>
         </div>
-
     </div>
 </div>
 
 <script>
-const id = new URLSearchParams(window.location.search).get('id');
+    const id = new URLSearchParams(window.location.search).get('id');
 
-const TOKEN = 'patZyvJl4u5MSDTgW.975f3c860d8c4cf7727459583099472585b6656d13e2529a578212eb54c6e4e9';
-const BASE = 'appGGs07d4FB6htwg';
-const TABLE = 'tblCYkMaAOHrX0nwN';
+    // Token and Base Info
+    const TOKEN = 'patZyvJl4u5MSDTgW.975f3c860d8c4cf7727459583099472585b6656d13e2529a578212eb54c6e4e9';
+    const BASE = 'appGGs07d4FB6htwg';
+    const TABLE = 'tblCYkMaAOHrX0nwN';
 
-async function load() {
-    try {
-        const formula = encodeURIComponent(`{formId}="${id}"`);
-        const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
+    async function load() {
+        try {
+            const formula = encodeURIComponent(`{formId}="${id}"`);
+            const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
 
-        const res = await fetch(url, {
-            headers: { Authorization: `Bearer ${TOKEN}` },
-            cache: "no-store"
-        });
+            const res = await fetch(url, {
+                headers: { Authorization: `Bearer ${TOKEN}` },
+                cache: "no-store"
+            });
 
-        const data = await res.json();
+            const data = await res.json();
 
-        if (!data.records || data.records.length === 0) {
-            throw new Error("No delivery found");
+            if (!data.records || data.records.length === 0) {
+                throw new Error("Delivery not found");
+            }
+
+            const f = data.records[0].fields;
+
+            // Set content
+            document.getElementById('bizName').innerText = (f['Charter Name'] || 'ROD2REEL').toUpperCase();
+            document.getElementById('video').src = f['Video URL'];
+
+            if (f['Social Post 1']) {
+                document.getElementById('captionBox').style.display = 'block';
+                document.getElementById('captionText').innerText = f['Social Post 1'];
+            }
+
+            // Apple-style transition
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('main').style.display = 'block';
+
+        } catch(e) {
+            document.getElementById('debug').innerText = "Status: " + e.message;
         }
-
-        const f = data.records[0].fields;
-
-        document.getElementById('bizName').innerText = (f['Charter Name'] || '').toUpperCase();
-        document.getElementById('video').src = f['Video URL'];
-
-        if (f['Social Post 1']) {
-            document.getElementById('captionBox').style.display = 'block';
-            document.getElementById('captionText').innerText = f['Social Post 1'];
-        }
-
-        document.getElementById('loader').style.display = 'none';
-        document.getElementById('main').style.display = 'block';
-
-    } catch(e) {
-        document.getElementById('debug').innerText = e.message + " | ID: " + id;
     }
-}
 
-function download() {
-    let u = document.getElementById('video').src;
-    if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
-    const a = document.createElement('a');
-    a.href = u;
-    a.download = "video.mp4";
-    a.click();
-}
+    function download() {
+        let u = document.getElementById('video').src;
+        if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
+        const a = document.createElement('a');
+        a.href = u;
+        a.download = "MyVideo.mp4";
+        a.click();
+    }
 
-if(id) load();
-else document.getElementById('debug').innerText = "Missing ID";
+    if(id) load();
+    else document.getElementById('debug').innerText = "Missing ID";
 </script>
 
 </body>
