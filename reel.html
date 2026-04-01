@@ -6,13 +6,14 @@
     
     <title>Your Vehicle is Ready 🚗</title>
     <meta property="og:title" content="Your Vehicle is Ready 🚗">
+    <meta property="og:description" content="Watch your cinematic video reel at delivery.rod2reel.com">
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --gold: #F5A623;
-            --blue: #007AFF; /* Electric Blue for the Download Button */
+            --blue: #007AFF; 
             --bg: #080808;
             --surface: #111;
             --border: #222;
@@ -103,7 +104,6 @@
 
         .btn:active { transform: scale(0.96); }
 
-        /* PRIMARY REVIEW BUTTON (GOLD) */
         .btn-primary { 
             background: var(--gold); 
             color: #000; 
@@ -111,13 +111,36 @@
             letter-spacing: 1px; 
         }
 
-        /* DOWNLOAD BUTTON (BLUE) */
         .btn-blue { 
             background: var(--blue); 
             color: #fff; 
             text-transform: uppercase; 
             letter-spacing: 1px;
             box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
+        }
+
+        /* CAPTION BOX STYLES */
+        .caption-box {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 20px;
+            margin: 15px 0 25px 0; /* Spacing between buttons */
+            text-align: left;
+        }
+
+        .caption-title {
+            font-size: 11px;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .caption-text {
+            font-size: 14px;
+            color: #ddd;
+            line-height: 1.6;
         }
 
         .footer {
@@ -150,6 +173,11 @@
 
         <a id="reviewBtn" href="https://xternalshine.co.za/" class="btn btn-primary">⭐ LEAVE US A REVIEW</a>
         
+        <div id="captionBox" class="caption-box" style="display:none;">
+            <div class="caption-title">READY TO POST</div>
+            <div id="captionText" class="caption-text"></div>
+        </div>
+
         <button class="btn btn-blue" onclick="download()">⬇ DOWNLOAD VIDEO</button>
 
         <div class="footer">
@@ -185,17 +213,23 @@
 
             const f = data.records[0].fields;
 
-            // 1. Business Name
+            // Business Name
             if(f['Charter Name']) {
                 document.getElementById('bizName').innerText = f['Charter Name'].toUpperCase();
             }
             
-            // 2. Video Source
+            // Video Source
             document.getElementById('video').src = f['Video URL'];
 
-            // 3. Review Link
+            // Review Link
             if (f['Review']) {
                 document.getElementById('reviewBtn').href = f['Review'];
+            }
+
+            // Social Caption (Social Post 1)
+            if (f['Social Post 1']) {
+                document.getElementById('captionBox').style.display = 'block';
+                document.getElementById('captionText').innerText = f['Social Post 1'];
             }
 
             document.getElementById('loader').style.display = 'none';
