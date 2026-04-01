@@ -30,7 +30,7 @@
 </head>
 <body>
     <div id="loading" class="loader-wrap">
-        <div class="loader-text" id="statusLabel">PREPARING YOUR REEL...</div>
+        <div id="statusLabel" class="loader-text">PREPARING YOUR REEL...</div>
     </div>
 
     <div id="mainContent">
@@ -45,12 +45,14 @@
 
     <script>
         const p = new URLSearchParams(window.location.search);
-        const recordId = p.get('id');
+        let rawId = p.get('id');
+        
+        // CRITICAL FIX: Clean the ID in case Make.com sends it with brackets or quotes
+        const recordId = rawId ? rawId.replace(/[\[\]\" ]/g, '') : null;
 
-        // YOUR ACTUAL TABLE DETAILS
         const AIRTABLE_TOKEN = 'patj2fjhAMYzbPIvg';
         const BASE_ID = 'appGGs07d4FB6htwg';
-        const TABLE_NAME = 'tblCYkMaAOHrX0nwN'; // YOUR DELIVERIES TABLE
+        const TABLE_NAME = 'tblCYkMaAOHrX0nwN'; 
 
         async function fetchDelivery() {
             try {
@@ -58,18 +60,17 @@
                     headers: { Authorization: `Bearer ${AIRTABLE_TOKEN}` }
                 });
                 
-                if (!response.ok) throw new Error();
+                if (!response.ok) throw new Error("Airtable lookup failed");
 
                 const data = await response.json();
                 const f = data.fields;
 
-                // Match column names exactly from your "Deliveries" table
                 const videoUrl = f['Video URL'];
-                const logoUrl = f['Logo']; // Verifying from CSV this is the column name
+                const logoUrl = f['Logo']; 
                 const bizName = f['Charter Name'];
 
                 if (!videoUrl) {
-                    document.getElementById('statusLabel').innerHTML = "VIDEO NOT READY<br><span class='error-msg'>URL is missing in Airtable</span>";
+                    document.getElementById('statusLabel').innerHTML = "VIDEO NOT READY<br><span class='error-msg'>The URL is missing in Airtable</span>";
                     return;
                 }
 
@@ -77,7 +78,6 @@
                 document.getElementById('mainVideo').src = videoUrl;
                 
                 if (logoUrl) {
-                    // Handle both URL strings and Airtable attachment arrays
                     document.getElementById('bizLogo').src = Array.isArray(logoUrl) ? logoUrl[0].url : logoUrl;
                 } else {
                     document.getElementById('bizLogo').style.display = 'none';
@@ -87,7 +87,7 @@
                 document.getElementById('mainContent').style.display = 'block';
 
             } catch (err) {
-                document.getElementById('statusLabel').innerHTML = "VIDEO NOT FOUND<br><span class='error-msg'>Check your Record ID</span>";
+                document.getElementById('statusLabel').innerHTML = "VIDEO NOT FOUND<br><span class='error-msg'>Check your link or Airtable permissions</span>";
             }
         }
 
