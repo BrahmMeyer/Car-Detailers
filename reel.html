@@ -54,7 +54,7 @@ body {
 }
 
 @keyframes fadeIn {
-    from { opacity:0; transform:translateY(10px); }
+    from { opacity:0; transform:translateY(15px); }
     to { opacity:1; transform:translateY(0); }
 }
 
@@ -101,6 +101,11 @@ video {
     margin-bottom:12px;
     cursor:pointer;
     border:none;
+    transition:0.2s;
+}
+
+.btn:active {
+    transform:scale(0.97);
 }
 
 .btn-primary {
@@ -137,30 +142,33 @@ video {
     line-height:1.5;
 }
 
-/* LOGO */
-.logo img {
-    max-width:260px;
-    margin-top:30px;
+/* FOOTER */
+.footer {
+    margin-top:40px;
+    text-align:center;
 }
 
-/* ERROR */
-.error {
-    color:red;
+.footer-main {
+    font-size:11px;
+    letter-spacing:2px;
+    color:var(--gold);
+    margin-bottom:8px;
+}
+
+.footer-sub {
     font-size:12px;
-    margin-top:10px;
+    color:#777;
 }
 </style>
 </head>
 
 <body>
 
-<!-- LOADER -->
 <div id="loader" class="loader">
     <h1>Preparing Your Delivery...</h1>
     <p id="debug"></p>
 </div>
 
-<!-- MAIN -->
 <div id="main">
 
     <div class="header">
@@ -170,19 +178,21 @@ video {
     <div class="container">
 
         <div class="video-wrap">
-            <video id="video" controls playsinline></video>
+            <video id="video" controls playsinline muted></video>
         </div>
 
         <button class="btn btn-primary" onclick="video.play()">▶ PLAY VIDEO</button>
-        <button class="btn btn-secondary" onclick="download()">⬇ DOWNLOAD</button>
+        <button class="btn btn-secondary" onclick="download()">⬇ DOWNLOAD VIDEO</button>
 
         <div id="captionBox" class="caption-box" style="display:none;">
             <div class="caption-title">READY TO POST</div>
             <div id="captionText" class="caption-text"></div>
         </div>
 
-        <div class="logo">
-            <img id="logo">
+        <div class="footer">
+            <div class="footer-main">POWERED BY ROD2REEL</div>
+            <div class="footer-sub">hello@rod2reel.com</div>
+            <div class="footer-sub">+27 (0)68 364 4061</div>
         </div>
 
     </div>
@@ -207,15 +217,14 @@ async function load() {
 
         const data = await res.json();
 
-        if (!data.records) throw new Error(JSON.stringify(data));
-        if (data.records.length === 0) throw new Error("No matching record");
+        if (!data.records || data.records.length === 0) {
+            throw new Error("No delivery found");
+        }
 
         const f = data.records[0].fields;
 
         document.getElementById('bizName').innerText = (f['Charter Name'] || '').toUpperCase();
         document.getElementById('video').src = f['Video URL'];
-
-        if (f['Logo']) document.getElementById('logo').src = f['Logo'];
 
         if (f['Social Post 1']) {
             document.getElementById('captionBox').style.display = 'block';
@@ -226,7 +235,7 @@ async function load() {
         document.getElementById('main').style.display = 'block';
 
     } catch(e) {
-        document.getElementById('debug').innerText = "Error: " + e.message + " | ID: " + id;
+        document.getElementById('debug').innerText = e.message + " | ID: " + id;
     }
 }
 
