@@ -6,7 +6,6 @@
     
     <title>Your Vehicle is Ready 🚗</title>
     <meta property="og:title" content="Your Vehicle is Ready 🚗">
-    <meta property="og:description" content="Watch your cinematic video reel at delivery.rod2reel.com">
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -29,7 +28,7 @@
             overflow-x: hidden;
         }
 
-        /* APPLE-STYLE LOADER */
+        /* LOADER */
         .loader {
             height: 100vh;
             display: flex;
@@ -48,7 +47,6 @@
 
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
 
-        /* MAIN CONTENT ANIMATION */
         #main {
             display: none;
             animation: appleFade 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
@@ -59,7 +57,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* HEADER */
         .header {
             padding: 60px 20px 30px;
             border-bottom: 1px solid var(--border);
@@ -72,7 +69,6 @@
             color: var(--gold);
         }
 
-        /* CONTENT */
         .container {
             max-width: 480px;
             margin: auto;
@@ -88,12 +84,8 @@
             border: 1px solid var(--border);
         }
 
-        video {
-            width: 100%;
-            display: block;
-        }
+        video { width: 100%; display: block; }
 
-        /* BUTTONS */
         .btn {
             width: 100%;
             padding: 20px;
@@ -104,50 +96,13 @@
             cursor: pointer;
             border: none;
             transition: all 0.2s ease;
+            text-decoration: none;
+            display: block;
         }
 
-        .btn:active {
-            transform: scale(0.96);
-        }
+        .btn-primary { background: var(--gold); color: #000; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid #333; }
 
-        .btn-primary {
-            background: var(--gold);
-            color: #000;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-secondary {
-            background: rgba(255,255,255,0.05);
-            color: #fff;
-            border: 1px solid #333;
-        }
-
-        /* CAPTION */
-        .caption-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px;
-            margin: 25px 0;
-            text-align: left;
-        }
-
-        .caption-title {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--gold);
-            margin-bottom: 10px;
-            font-weight: bold;
-        }
-
-        .caption-text {
-            font-size: 14px;
-            color: #ddd;
-            line-height: 1.6;
-        }
-
-        /* PREMIUM FOOTER */
         .footer {
             margin-top: 50px;
             padding-bottom: 60px;
@@ -155,21 +110,8 @@
             padding-top: 30px;
         }
 
-        .footer-main {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--gold);
-            margin-bottom: 8px;
-            font-weight: bold;
-        }
-
-        .footer-sub {
-            font-size: 12px;
-            color: #666;
-            margin: 3px 0;
-            text-decoration: none;
-            display: block;
-        }
+        .footer-main { font-size: 11px; letter-spacing: 2px; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
+        .footer-sub { font-size: 12px; color: #666; margin: 3px 0; display: block; }
     </style>
 </head>
 
@@ -177,12 +119,11 @@
 
 <div id="loader" class="loader">
     <h1>Preparing Your Delivery...</h1>
-    <p id="debug" style="font-size: 10px; color: #333; margin-top: 10px;"></p>
 </div>
 
 <div id="main">
     <div class="header">
-        <div id="bizName" class="biz-name"></div>
+        <div id="bizName" class="biz-name">XTERNAL SHINE</div>
     </div>
 
     <div class="container">
@@ -190,13 +131,9 @@
             <video id="video" controls playsinline></video>
         </div>
 
-        <button class="btn btn-primary" onclick="document.getElementById('video').play()">▶ PLAY VIDEO</button>
+        <a id="reviewBtn" href="https://xternalshine.co.za/" class="btn btn-primary">⭐ LEAVE US A REVIEW</a>
+        
         <button class="btn btn-secondary" onclick="download()">⬇ DOWNLOAD VIDEO</button>
-
-        <div id="captionBox" class="caption-box" style="display:none;">
-            <div class="caption-title">READY TO POST</div>
-            <div id="captionText" class="caption-text"></div>
-        </div>
 
         <div class="footer">
             <div class="footer-main">POWERED BY ROD2REEL</div>
@@ -231,19 +168,24 @@
 
             const f = data.records[0].fields;
 
-            document.getElementById('bizName').innerText = (f['Charter Name'] || 'ROD2REEL').toUpperCase();
+            // 1. Business Name from Airtable
+            if(f['Charter Name']) {
+                document.getElementById('bizName').innerText = f['Charter Name'].toUpperCase();
+            }
+            
+            // 2. Video URL
             document.getElementById('video').src = f['Video URL'];
 
-            if (f['Social Post 1']) {
-                document.getElementById('captionBox').style.display = 'block';
-                document.getElementById('captionText').innerText = f['Social Post 1'];
+            // 3. Dynamic Review Link from "Review" column
+            if (f['Review']) {
+                document.getElementById('reviewBtn').href = f['Review'];
             }
 
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
 
         } catch(e) {
-            document.getElementById('debug').innerText = "Status: " + e.message;
+            console.error(e);
         }
     }
 
@@ -252,7 +194,7 @@
         if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
         const a = document.createElement('a');
         a.href = u;
-        a.download = "MyVideo.mp4";
+        a.download = "XternalShine_Video.mp4";
         a.click();
     }
 
