@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Your Vehicle is Ready</title>
-    <meta property="og:title" content="Your Vehicle is Ready">
+    <title>Your Experience is Ready — Rod2Reel</title>
+    <meta property="og:title" content="Your Experience is Ready">
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -173,7 +173,7 @@
 <body>
 
 <div id="loader" class="loader">
-    <h1>Preparing Your Delivery...</h1>
+    <h1>Preparing Your Experience...</h1>
 </div>
 
 <div id="main">
@@ -202,7 +202,7 @@
             <img id="shopLogo" class="workshop-logo" src="" crossorigin="anonymous" style="display:none;">
             <div class="footer-main">POWERED BY ROD2REEL</div>
             <div class="footer-sub">hello@rod2reel.com</div>
-            <div class="footer-sub">+27 (0)68 364 4061</div>
+            <div class="footer-sub">+1 (573) 533-3433</div>
         </div>
     </div>
 </div>
@@ -242,7 +242,6 @@
                 document.getElementById('reviewBtn').href = f['Review'];
             }
 
-            // Enhanced Logo Handling
             if (f['Logo URL']) {
                 let logoUrl = "";
                 if (Array.isArray(f['Logo URL'])) {
@@ -285,7 +284,8 @@
         if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
         const a = document.createElement('a');
         a.href = u;
-        a.download = "MyVehicle_Video.mp4";
+        // BRAND UPDATE 3: File Name
+        a.download = "My_Experience_Video.mp4";
         a.click();
     }
 
