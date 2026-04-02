@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Experience — Rod2Reel</title>
+    <title>Loading... — Rod2Reel</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #F5A623; --bg: #080808; --surface: #111; --border: #222; --text: #fff; --grey: #666; }
@@ -61,7 +61,6 @@
     async function load() {
         if (!id) { document.getElementById('status').innerText = "Missing ID"; return; }
         try {
-            // FIXED: Added FIND and ARRAYJOIN to handle the lookupId array
             const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {formId}="${id}")`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
             const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` }, cache: "no-store" });
@@ -73,7 +72,12 @@
             }
 
             const f = data.records[0].fields;
-            document.getElementById('bizName').innerText = (f['Charter Name'] || "ROD2REEL").toUpperCase();
+            const charterName = f['Charter Name'] || "ROD2REEL";
+            
+            // UPDATE: Dynamically changes the browser/link title
+            document.title = `${charterName} Video — Rod2Reel`;
+            document.getElementById('bizName').innerText = charterName.toUpperCase();
+            
             document.getElementById('video').src = f['Video URL'] || "";
             if (f['Review']) { 
                 document.getElementById('reviewBtn').href = f['Review']; 
