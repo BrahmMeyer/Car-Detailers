@@ -107,7 +107,6 @@
 
         .btn:active { transform: scale(0.96); }
 
-        /* CAPTION BOX */
         .caption-box {
             background: var(--surface);
             border: 1px solid var(--border);
@@ -216,13 +215,13 @@
 
     async function load() {
         if (!id) {
-            document.getElementById('loadText').innerText = "ERROR: No ID provided in URL.";
+            document.getElementById('loadText').innerText = "ERROR: Link is missing the ID.";
             return;
         }
 
         try {
-            // Using lookupId to match your new Airtable setup
-            const formula = encodeURIComponent(`{lookupId}="${id}"`);
+            // DEBUG VERSION: Uses FIND to allow for fuzzy/contains matching
+            const formula = encodeURIComponent(`FIND("${id}", {lookupId})`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
 
             const res = await fetch(url, {
@@ -233,35 +232,29 @@
             const data = await res.json();
 
             if (!data.records || data.records.length === 0) {
-                document.getElementById('loadText').innerText = "Delivery Not Found (Check lookupId)";
+                document.getElementById('loadText').innerText = "Record Not Found (Checking: " + id + ")";
                 return;
             }
 
             const f = data.records[0].fields;
 
-            // 1. Set Charter Name
+            // 1. Business Name
             if(f['Charter Name']) {
                 document.getElementById('bizName').innerText = f['Charter Name'].toUpperCase();
             }
             
-            // 2. Set Video
-            document.getElementById('video').src = f['Video URL'];
+            // 2. Video
+            document.getElementById('video').src = f['Video URL'] || "";
 
-            // 3. Set Review Link
+            // 3. Review Link
             if (f['Review']) {
                 document.getElementById('reviewBtn').href = f['Review'];
                 document.getElementById('reviewBtn').style.display = 'inline-block';
             }
 
-            // 4. Set Logo (Mapped to column "Logo")
+            // 4. Logo (Field: Logo)
             if (f['Logo']) {
-                let logoUrl = "";
-                if (Array.isArray(f['Logo'])) {
-                    logoUrl = f['Logo'][0].url; 
-                } else {
-                    logoUrl = f['Logo']; 
-                }
-
+                let logoUrl = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
                 if (logoUrl) {
                     const logoImg = document.getElementById('shopLogo');
                     logoImg.src = logoUrl;
@@ -269,19 +262,19 @@
                 }
             }
 
-            // 5. Set Caption
+            // 5. Caption
             if (f['Social Post 1']) {
                 document.getElementById('captionBox').style.display = 'block';
                 document.getElementById('captionText').innerText = f['Social Post 1'];
             }
 
-            // Show UI
+            // Reveal Page
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
 
         } catch(e) {
             console.error(e);
-            document.getElementById('loadText').innerText = "System Error. Please try again.";
+            document.getElementById('loadText').innerText = "System error. Please refresh.";
         }
     }
 
@@ -296,6 +289,7 @@
 
     function download() {
         let u = document.getElementById('video').src;
+        if(!u) return;
         if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
         const a = document.createElement('a');
         a.href = u;
@@ -307,5 +301,4 @@
 </script>
 
 </body>
-</html>
 </html>
