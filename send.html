@@ -3,79 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dispatch Hub — Rod2Reel</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>Your Experience — Rod2Reel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; --grey: #666; }
-        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
-        .card { background: var(--surface); padding: 35px 30px; border-radius: 24px; border: 1px solid var(--border); width: 100%; max-width: 400px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
-        h2 { color: var(--gold); margin-bottom: 12px; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; }
-        p { color: #666; font-size: 14px; margin-bottom: 20px; }
-        input { width: 100%; padding: 16px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: var(--text); font-size: 16px; margin-bottom: 20px; outline: none; text-align: center; }
-        .btn-group { display: flex; flex-direction: column; gap: 12px; }
-        .btn-send { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 16px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; text-decoration: none; display: block; text-transform: uppercase; letter-spacing: 1px; }
-        .btn-send:active { transform: scale(0.98); background: rgba(245,166,35,0.05); }
-        .footer-logo { margin-top: 30px; color: var(--grey); font-size: 11px; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; }
+        :root { --gold: #F5A623; --bg: #080808; --surface: #111; --border: #222; --text: #fff; --grey: #666; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; text-align: center; }
+        
+        .loader { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .loader h1 { font-family: 'Bebas Neue'; font-size: 28px; color: var(--gold); letter-spacing: 2px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
+        
+        #main { display: none; padding: 60px 20px; }
+        .biz-name { font-family: 'Bebas Neue'; font-size: 48px; letter-spacing: 3px; color: var(--gold); margin-bottom: 30px; }
+        .container { max-width: 480px; margin: auto; }
+        
+        .video-wrap { border-radius: 24px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); margin-bottom: 20px; background: #000; border: 1px solid var(--border); }
+        video { width: 100%; display: block; }
+        
+        /* UNIFIED BUTTON STYLE */
+        .btn { width: 100%; padding: 18px 25px; border-radius: 10px; font-weight: bold; font-size: 14px; margin-bottom: 12px; cursor: pointer; text-decoration: none; display: inline-block; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 1px; background: transparent; }
+        
+        .caption-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin: 10px 0 25px 0; text-align: left; }
+        .caption-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: var(--gold); font-weight: bold; }
+        .copy-btn { background: rgba(245,166,35,0.1); border: 1px solid var(--gold); color: var(--gold); font-size: 9px; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
+        
+        /* Logo size increased by 1.75x (140 * 1.75 = 245) */
+        .biz-logo { max-width: 245px; margin: 30px auto 10px; display: none; filter: grayscale(1) brightness(1.5); opacity: 0.6; }
+        
+        .footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
+        .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+        .footer-sub { font-size: 11px; color: var(--grey); margin: 3px 0; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Dispatch Hub</h2>
-    <p id="instructionText">Enter details and choose method:</p>
-    
-    <input type="text" id="recipient" placeholder="Phone Number or Email" autocomplete="off">
-    
-    <div class="btn-group">
-        <button onclick="dispatch('whatsapp')" class="btn-send">Send via WhatsApp</button>
-        <button onclick="dispatch('sms')" class="btn-send">Send via SMS</button>
-        <button onclick="dispatch('email')" class="btn-send">Send via Email</button>
+<div id="loader" class="loader">
+    <h1 id="status">Preparing Your Experience...</h1>
+</div>
+
+<div id="main">
+    <div id="bizName" class="biz-name">ROD2REEL</div>
+    <div class="container">
+        <div class="video-wrap"><video id="video" controls playsinline></video></div>
+        
+        <a id="reviewBtn" href="#" class="btn" style="display:none;">Leave Us A Review</a>
+
+        <div id="captionBox" class="caption-box" style="display:none;">
+            <div class="caption-header">READY TO POST <button class="copy-btn" onclick="copyText()">Tap to Copy</button></div>
+            <div id="captionText" style="font-size: 14px; color: #ddd; line-height: 1.6;"></div>
+        </div>
+
+        <button class="btn" onclick="downloadVideo()">Download Video</button>
+
+        <img id="shopLogo" class="biz-logo" src="">
+
+        <div class="footer">
+            <div class="footer-main">Powered by Rod2Reel</div>
+            <div class="footer-sub">hello@rod2reel.com</div>
+            <div class="footer-sub">+27 (0)68 364 4061</div>
+        </div>
     </div>
 </div>
 
-<div class="footer-logo">Powered by Rod2Reel</div>
-
 <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    const recordId = urlParams.get('id');
+    const id = new URLSearchParams(window.location.search).get('id');
     const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f031f95d5db82e8430';
     const BASE = 'appGGs07d4FB6htwg';
     const TABLE = 'tblCYkMaAOHrX0nwN';
 
-    async function updateName() {
-        if (!recordId) return;
+    async function load() {
+        if (!id) { document.getElementById('status').innerText = "Missing ID"; return; }
         try {
-            const formula = encodeURIComponent(`OR({lookupId}="${recordId}", {formId}="${recordId}")`);
+            const formula = encodeURIComponent(`OR({lookupId}="${id}", {formId}="${id}")`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
-            const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
+            const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` }, cache: "no-store" });
             const data = await res.json();
-            if (data.records && data.records.length > 0) {
-                const name = data.records[0].fields['Charter Name'] || "Charter";
-                document.getElementById('instructionText').innerText = `${name} Video`;
+
+            if (!data.records || data.records.length === 0) {
+                document.getElementById('status').innerText = "Not Found";
+                return;
             }
-        } catch (e) { console.error(e); }
-    }
 
-    function dispatch(type) {
-        const input = document.getElementById('recipient').value.trim();
-        if (!input) { alert("Please enter a mobile number or email address."); return; }
+            const f = data.records[0].fields;
+            document.getElementById('bizName').innerText = (f['Charter Name'] || "ROD2REEL").toUpperCase();
+            document.getElementById('video').src = f['Video URL'] || "";
+            
+            if (f['Review']) { 
+                document.getElementById('reviewBtn').href = f['Review']; 
+                document.getElementById('reviewBtn').style.display = 'block'; 
+            }
+            
+            if (f['Social Post 1']) { 
+                document.getElementById('captionBox').style.display = 'block'; 
+                document.getElementById('captionText').innerText = f['Social Post 1']; 
+            }
 
-        const reelLink = `https://delivery.rod2reel.com/reel.html?id=${recordId}`;
-        // UPDATED MESSAGE: Starts directly with "View it here:"
-        const message = `View it here:\n${reelLink}`;
+            if (f['Logo']) {
+                const logoImg = document.getElementById('shopLogo');
+                logoImg.src = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
+                logoImg.style.display = 'block';
+            }
 
-        if (type === 'whatsapp') {
-            let phone = input.replace(/\D/g, '');
-            if (phone.startsWith('0') && phone.length === 10) { phone = '27' + phone.substring(1); }
-            window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
-        } else if (type === 'sms') {
-            window.location.href = `sms:${input}?&body=${encodeURIComponent(message)}`;
-        } else if (type === 'email') {
-            window.location.href = `mailto:${input}?subject=Your Video is Ready&body=${encodeURIComponent(message)}`;
+            document.getElementById('loader').style.display = 'none';
+            document.getElementById('main').style.display = 'block';
+        } catch (e) {
+            document.getElementById('status').innerText = "Connection Error";
         }
     }
-    
-    updateName();
+
+    function copyText() { 
+        navigator.clipboard.writeText(document.getElementById('captionText').innerText); 
+        alert("Copied!"); 
+    }
+
+    function downloadVideo() { 
+        let u = document.getElementById('video').src;
+        if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
+        const a = document.createElement('a'); a.href = u; a.download = "Reel.mp4"; a.click(); 
+    }
+    load();
 </script>
 </body>
 </html>
