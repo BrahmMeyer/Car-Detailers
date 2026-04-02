@@ -3,302 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Your Experience is Ready — Rod2Reel</title>
-    <meta property="og:title" content="Your Experience is Ready">
-    <meta property="og:type" content="website">
-
+    <title>Your Experience — Rod2Reel</title>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --gold: #F5A623;
-            --blue: #007AFF; 
-            --bg: #080808;
-            --surface: #111;
-            --border: #222;
-            --text: #fff;
-            --footer-grey: #666;
-        }
-
+        :root { --gold: #F5A623; --bg: #080808; --surface: #111; --border: #222; --text: #fff; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            text-align: center;
-            overflow-x: hidden;
-        }
-
-        /* LOADER */
-        .loader {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loader h1 {
-            font-family: 'Bebas Neue';
-            font-size: 28px;
-            color: var(--gold);
-            letter-spacing: 2px;
-            animation: pulse 1.5s infinite;
-        }
-
+        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; text-align: center; }
+        .loader { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .loader h1 { font-family: 'Bebas Neue'; font-size: 28px; color: var(--gold); letter-spacing: 2px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-
-        #main {
-            display: none;
-            animation: appleFade 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-        }
-
-        @keyframes appleFade {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .header {
-            padding: 60px 20px 30px;
-        }
-
-        .biz-name {
-            font-family: 'Bebas Neue';
-            font-size: 48px;
-            letter-spacing: 3px;
-            color: var(--gold);
-        }
-
-        .container {
-            max-width: 480px;
-            margin: auto;
-            padding: 20px;
-        }
-
-        .video-wrap {
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8);
-            margin-bottom: 30px;
-            background: #000;
-            border: 1px solid var(--border);
-        }
-
+        #main { display: none; padding: 60px 20px; }
+        .biz-name { font-family: 'Bebas Neue'; font-size: 48px; letter-spacing: 3px; color: var(--gold); margin-bottom: 30px; }
+        .container { max-width: 480px; margin: auto; }
+        .video-wrap { border-radius: 24px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); margin-bottom: 30px; background: #000; border: 1px solid var(--border); }
         video { width: 100%; display: block; }
-
-        .btn {
-            width: 100%;
-            padding: 18px 25px;
-            border-radius: 8px;
-            font-weight: bold;
-            font-size: 14px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            text-decoration: none;
-            display: inline-block;
-            background-color: transparent;
-            color: var(--gold);
-            border: 1px solid var(--gold);
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn:active { transform: scale(0.96); }
-
-        .caption-box {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 20px;
-            margin: 15px 0 25px 0;
-            text-align: left;
-            position: relative;
-        }
-
-        .caption-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
-        .caption-title {
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--gold);
-            font-weight: bold;
-        }
-
-        .copy-btn {
-            background: rgba(245, 166, 35, 0.1);
-            border: 1px solid var(--gold);
-            color: var(--gold);
-            font-size: 9px;
-            padding: 4px 8px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        .caption-text {
-            font-size: 14px;
-            color: #ddd;
-            line-height: 1.6;
-        }
-
-        .footer {
-            margin-top: 30px;
-            padding-bottom: 60px;
-            padding-top: 10px;
-        }
-
-        .workshop-logo {
-            max-width: 140px;
-            max-height: 100px;
-            margin: 0 auto 30px auto;
-            display: block;
-            filter: drop-shadow(0 0 15px rgba(245, 166, 35, 0.3));
-            object-fit: contain;
-        }
-
-        .footer-main { font-size: 12px; letter-spacing: 2px; color: var(--footer-grey); margin-bottom: 8px; font-weight: bold; }
-        .footer-sub { font-size: 11px; color: var(--footer-grey); margin: 3px 0; display: block; }
+        .btn { width: 100%; padding: 18px 25px; border-radius: 8px; font-weight: bold; font-size: 14px; margin-bottom: 12px; cursor: pointer; text-decoration: none; display: inline-block; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 1px; }
+        .caption-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin: 15px 0 25px 0; text-align: left; }
+        .caption-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: var(--gold); font-weight: bold; }
+        .copy-btn { background: rgba(245,166,35,0.1); border: 1px solid var(--gold); color: var(--gold); font-size: 9px; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
     </style>
 </head>
-
 <body>
 
 <div id="loader" class="loader">
-    <h1 id="loadText">Preparing Your Experience...</h1>
+    <h1 id="status">Preparing Your Experience...</h1>
 </div>
 
 <div id="main">
-    <div class="header">
-        <div id="bizName" class="biz-name">LOADING...</div>
-    </div>
-
+    <div id="bizName" class="biz-name">ROD2REEL</div>
     <div class="container">
-        <div class="video-wrap">
-            <video id="video" controls playsinline></video>
-        </div>
-
+        <div class="video-wrap"><video id="video" controls playsinline></video></div>
         <a id="reviewBtn" href="#" class="btn" style="display:none;">LEAVE US A REVIEW</a>
-        
         <div id="captionBox" class="caption-box" style="display:none;">
-            <div class="caption-header">
-                <div class="caption-title">READY TO POST</div>
-                <button class="copy-btn" onclick="copyCaption()">Tap to Copy</button>
-            </div>
-            <div id="captionText" class="caption-text"></div>
+            <div class="caption-header">READY TO POST <button class="copy-btn" onclick="copyText()">Tap to Copy</button></div>
+            <div id="captionText" style="font-size: 14px; color: #ddd; line-height: 1.6;"></div>
         </div>
-
-        <button class="btn" onclick="download()">DOWNLOAD VIDEO</button>
-
-        <div class="footer">
-            <img id="shopLogo" class="workshop-logo" src="" crossorigin="anonymous" style="display:none;">
-            <div class="footer-main">POWERED BY ROD2REEL</div>
-            <div class="footer-sub">hello@rod2reel.com</div>
-            <div class="footer-sub">+1 (573) 533-3433</div>
-        </div>
+        <button class="btn" onclick="downloadVideo()">DOWNLOAD VIDEO</button>
     </div>
 </div>
 
 <script>
     const id = new URLSearchParams(window.location.search).get('id');
 
-    const TOKEN = 'patZyvJl4u5MSDTgW.975f3c860d8c4cf7727459583099472585b6656d13e2529a578212eb54c6e4e9';
+    // YOUR NEW TOKEN IS ALREADY HERE
+    const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f031f95d5db82e8430';
     const BASE = 'appGGs07d4FB6htwg';
     const TABLE = 'tblCYkMaAOHrX0nwN';
 
     async function load() {
-        if (!id) {
-            document.getElementById('loadText').innerText = "ERROR: Link is missing the ID.";
-            return;
-        }
+        if (!id) { document.getElementById('status').innerText = "Error: Link is broken (no ID)."; return; }
 
         try {
-            // DEBUG VERSION: Uses FIND to allow for fuzzy/contains matching
-            const formula = encodeURIComponent(`FIND("${id}", {lookupId})`);
+            // UNIVERSAL SEARCH: Checks lookupId OR formId
+            const formula = encodeURIComponent(`OR({lookupId}="${id}", {formId}="${id}")`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
 
-            const res = await fetch(url, {
+            const res = await fetch(url, { 
                 headers: { Authorization: `Bearer ${TOKEN}` },
-                cache: "no-store"
+                cache: "no-store" 
             });
-
             const data = await res.json();
 
             if (!data.records || data.records.length === 0) {
-                document.getElementById('loadText').innerText = "Record Not Found (Checking: " + id + ")";
+                document.getElementById('status').innerText = "Not found in Airtable (ID: " + id + ")";
                 return;
             }
 
             const f = data.records[0].fields;
-
-            // 1. Business Name
-            if(f['Charter Name']) {
-                document.getElementById('bizName').innerText = f['Charter Name'].toUpperCase();
+            
+            // Set business name
+            document.getElementById('bizName').innerText = (f['Charter Name'] || "ROD2REEL").toUpperCase();
+            
+            // Set video source
+            document.getElementById('video').src = f['Video URL'] || "";
+            
+            // Set review button
+            if (f['Review']) { 
+                document.getElementById('reviewBtn').href = f['Review']; 
+                document.getElementById('reviewBtn').style.display = 'block'; 
             }
             
-            // 2. Video
-            document.getElementById('video').src = f['Video URL'] || "";
-
-            // 3. Review Link
-            if (f['Review']) {
-                document.getElementById('reviewBtn').href = f['Review'];
-                document.getElementById('reviewBtn').style.display = 'inline-block';
+            // Set caption
+            if (f['Social Post 1']) { 
+                document.getElementById('captionBox').style.display = 'block'; 
+                document.getElementById('captionText').innerText = f['Social Post 1']; 
             }
 
-            // 4. Logo (Field: Logo)
-            if (f['Logo']) {
-                let logoUrl = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
-                if (logoUrl) {
-                    const logoImg = document.getElementById('shopLogo');
-                    logoImg.src = logoUrl;
-                    logoImg.style.display = 'block';
-                }
-            }
-
-            // 5. Caption
-            if (f['Social Post 1']) {
-                document.getElementById('captionBox').style.display = 'block';
-                document.getElementById('captionText').innerText = f['Social Post 1'];
-            }
-
-            // Reveal Page
+            // Hide loader and show main content
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
 
-        } catch(e) {
+        } catch (e) {
             console.error(e);
-            document.getElementById('loadText').innerText = "System error. Please refresh.";
+            document.getElementById('status').innerText = "Connection Error. Please check token permissions.";
         }
     }
 
-    function copyCaption() {
+    function copyText() { 
         const text = document.getElementById('captionText').innerText;
         navigator.clipboard.writeText(text).then(() => {
-            const btn = document.querySelector('.copy-btn');
-            btn.innerText = "COPIED!";
-            setTimeout(() => { btn.innerText = "Tap to Copy"; }, 2000);
+            alert("Caption copied!"); 
         });
     }
 
-    function download() {
+    function downloadVideo() { 
         let u = document.getElementById('video').src;
         if(!u) return;
         if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
-        const a = document.createElement('a');
-        a.href = u;
-        a.download = "My_Experience_Video.mp4";
-        a.click();
+        const a = document.createElement('a'); a.href = u; a.download = "My_Reel.mp4"; a.click(); 
     }
 
     load();
 </script>
-
 </body>
 </html>
