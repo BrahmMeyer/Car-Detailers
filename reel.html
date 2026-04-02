@@ -14,25 +14,25 @@
         .loader h1 { font-family: 'Bebas Neue'; font-size: 28px; color: var(--gold); letter-spacing: 2px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
         
-        #main { display: none; padding: 60px 20px 40px; }
+        #main { display: none; padding: 60px 20px; }
         .biz-name { font-family: 'Bebas Neue'; font-size: 48px; letter-spacing: 3px; color: var(--gold); margin-bottom: 30px; }
         .container { max-width: 480px; margin: auto; }
         
         .video-wrap { border-radius: 24px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); margin-bottom: 20px; background: #000; border: 1px solid var(--border); }
         video { width: 100%; display: block; }
         
-        .btn { width: 100%; padding: 18px 25px; border-radius: 10px; font-weight: bold; font-size: 14px; margin-bottom: 12px; cursor: pointer; text-decoration: none; display: inline-block; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 1px; background: transparent; transition: 0.2s; }
-        .btn:active { transform: scale(0.98); }
+        /* UNIFIED BUTTON STYLE */
+        .btn { width: 100%; padding: 18px 25px; border-radius: 10px; font-weight: bold; font-size: 14px; margin-bottom: 12px; cursor: pointer; text-decoration: none; display: inline-block; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 1px; background: transparent; }
         
         .caption-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin: 10px 0 25px 0; text-align: left; }
-        .caption-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: var(--gold); font-weight: bold; letter-spacing: 1px; }
-        .copy-btn { background: rgba(245,166,35,0.1); border: 1px solid var(--gold); color: var(--gold); font-size: 9px; padding: 4px 8px; border-radius: 6px; cursor: pointer; text-transform: uppercase; }
+        .caption-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: var(--gold); font-weight: bold; }
+        .copy-btn { background: rgba(245,166,35,0.1); border: 1px solid var(--gold); color: var(--gold); font-size: 9px; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
         
-        .biz-logo { max-width: 120px; max-height: 80px; margin: 30px auto 20px; display: none; filter: grayscale(1) brightness(1.5); opacity: 0.7; }
+        .biz-logo { max-width: 140px; margin: 30px auto 10px; display: none; filter: grayscale(1) brightness(1.5); opacity: 0.6; }
         
         .footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
-        .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; margin-bottom: 8px; text-transform: uppercase; }
-        .footer-sub { font-size: 11px; color: var(--grey); margin: 3px 0; display: block; }
+        .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
+        .footer-sub { font-size: 11px; color: var(--grey); margin: 3px 0; }
     </style>
 </head>
 <body>
@@ -43,12 +43,9 @@
 
 <div id="main">
     <div id="bizName" class="biz-name">ROD2REEL</div>
-    
     <div class="container">
-        <div class="video-wrap">
-            <video id="video" controls playsinline></video>
-        </div>
-
+        <div class="video-wrap"><video id="video" controls playsinline></video></div>
+        
         <a id="reviewBtn" href="#" class="btn" style="display:none;">Leave Us A Review</a>
 
         <div id="captionBox" class="caption-box" style="display:none;">
@@ -58,7 +55,7 @@
 
         <button class="btn" onclick="downloadVideo()">Download Video</button>
 
-        <img id="shopLogo" class="biz-logo" src="" alt="Business Logo">
+        <img id="shopLogo" class="biz-logo" src="">
 
         <div class="footer">
             <div class="footer-main">Powered by Rod2Reel</div>
@@ -75,73 +72,56 @@
     const TABLE = 'tblCYkMaAOHrX0nwN';
 
     async function load() {
-        if (!id) { document.getElementById('status').innerText = "Link error: Missing ID."; return; }
-
+        if (!id) { document.getElementById('status').innerText = "Missing ID"; return; }
         try {
             const formula = encodeURIComponent(`OR({lookupId}="${id}", {formId}="${id}")`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
-
-            const res = await fetch(url, { 
-                headers: { Authorization: `Bearer ${TOKEN}` },
-                cache: "no-store" 
-            });
+            const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` }, cache: "no-store" });
             const data = await res.json();
 
             if (!data.records || data.records.length === 0) {
-                document.getElementById('status').innerText = "Delivery not found.";
+                document.getElementById('status').innerText = "Not Found";
                 return;
             }
 
             const f = data.records[0].fields;
-            
-            // 1. Name
             document.getElementById('bizName').innerText = (f['Charter Name'] || "ROD2REEL").toUpperCase();
-            
-            // 2. Video
             document.getElementById('video').src = f['Video URL'] || "";
             
-            // 3. Review Link
+            // Check for Review link
             if (f['Review']) { 
                 document.getElementById('reviewBtn').href = f['Review']; 
                 document.getElementById('reviewBtn').style.display = 'block'; 
             }
             
-            // 4. Caption
             if (f['Social Post 1']) { 
                 document.getElementById('captionBox').style.display = 'block'; 
                 document.getElementById('captionText').innerText = f['Social Post 1']; 
             }
 
-            // 5. Logo
             if (f['Logo']) {
-                const logoUrl = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
                 const logoImg = document.getElementById('shopLogo');
-                logoImg.src = logoUrl;
+                logoImg.src = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
                 logoImg.style.display = 'block';
             }
 
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
-
         } catch (e) {
-            document.getElementById('status').innerText = "System error. Please refresh.";
+            document.getElementById('status').innerText = "Connection Error";
         }
     }
 
     function copyText() { 
-        const text = document.getElementById('captionText').innerText;
-        navigator.clipboard.writeText(text).then(() => {
-            alert("Caption copied! Paste it when you share your video."); 
-        });
+        navigator.clipboard.writeText(document.getElementById('captionText').innerText); 
+        alert("Copied!"); 
     }
 
     function downloadVideo() { 
         let u = document.getElementById('video').src;
-        if(!u) return;
         if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
-        const a = document.createElement('a'); a.href = u; a.download = "My_Reel.mp4"; a.click(); 
+        const a = document.createElement('a'); a.href = u; a.download = "Reel.mp4"; a.click(); 
     }
-
     load();
 </script>
 </body>
