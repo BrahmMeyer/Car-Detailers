@@ -6,20 +6,19 @@
     <title>Dispatch Hub — Rod2Reel</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; --green: #25D366; --blue: #007AFF; --gray: #666666; }
+        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; --grey: #666; }
         body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
         .card { background: var(--surface); padding: 35px 30px; border-radius: 24px; border: 1px solid var(--border); width: 100%; max-width: 400px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
         h2 { color: var(--gold); margin-bottom: 12px; font-size: 24px; letter-spacing: 1px; text-transform: uppercase; }
         p { color: #666; font-size: 14px; margin-bottom: 20px; }
-        input { width: 100%; padding: 16px; border-radius: 12px; border: 1px solid #333; background: #1a1a1a; color: var(--text); font-size: 16px; margin-bottom: 20px; outline: none; text-align: center; }
-        input:focus { border-color: var(--gold); }
+        input { width: 100%; padding: 16px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: var(--text); font-size: 16px; margin-bottom: 20px; outline: none; text-align: center; }
         .btn-group { display: flex; flex-direction: column; gap: 12px; }
-        .btn { padding: 16px; border-radius: 10px; font-weight: bold; font-size: 14px; border: none; cursor: pointer; text-decoration: none; color: white; display: block; transition: transform 0.1s; text-transform: uppercase; letter-spacing: 1px; }
-        .btn:active { transform: scale(0.98); }
-        .btn-whatsapp { background: #25D366; }
-        .btn-sms { background: var(--blue); }
-        .btn-email { background: #333; border: 1px solid #444; }
-        .footer-logo { margin-top: 30px; color: var(--gray); font-size: 11px; letter-spacing: 1.5px; font-weight: bold; }
+        
+        /* MATCHING EMAIL STYLE: Hollow Gold */
+        .btn-send { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 16px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; text-decoration: none; display: block; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-send:active { transform: scale(0.98); background: rgba(245,166,35,0.05); }
+
+        .footer-logo { margin-top: 30px; color: var(--grey); font-size: 11px; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
 <body>
@@ -31,13 +30,13 @@
     <input type="text" id="recipient" placeholder="Phone Number or Email" autocomplete="off">
     
     <div class="btn-group">
-        <button onclick="dispatch('whatsapp')" class="btn btn-whatsapp">Send via WhatsApp</button>
-        <button onclick="dispatch('sms')" class="btn btn-sms">Send via SMS</button>
-        <button onclick="dispatch('email')" class="btn btn-email">Send via Email</button>
+        <button onclick="dispatch('whatsapp')" class="btn-send">Send via WhatsApp</button>
+        <button onclick="dispatch('sms')" class="btn-send">Send via SMS</button>
+        <button onclick="dispatch('email')" class="btn-send">Send via Email</button>
     </div>
 </div>
 
-<div class="footer-logo">POWERED BY ROD2REEL</div>
+<div class="footer-logo">Powered by Rod2Reel</div>
 
 <script>
     function dispatch(type) {
@@ -48,15 +47,14 @@
         if (!input) { alert("Please enter a mobile number or email address."); return; }
 
         const reelLink = `https://delivery.rod2reel.com/reel.html?id=${recordId}`;
+        // CLEAN SINGLE MESSAGE
         const message = `Your video experience is ready! View it here:\n${reelLink}`;
 
         if (type === 'whatsapp') {
             let phone = input.replace(/\D/g, '');
-            // Simple South Africa prefix fix
             if (phone.startsWith('0') && phone.length === 10) { phone = '27' + phone.substring(1); }
             window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
         } else if (type === 'sms') {
-            // Standard SMS link
             window.location.href = `sms:${input}?&body=${encodeURIComponent(message)}`;
         } else if (type === 'email') {
             window.location.href = `mailto:${input}?subject=Your Video is Ready&body=${encodeURIComponent(message)}`;
