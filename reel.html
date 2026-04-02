@@ -72,29 +72,40 @@
             }
 
             const f = data.records[0].fields;
-            const charterName = f['Charter Name'] || "ROD2REEL";
             
-            // UPDATE: Dynamically changes the browser/link title
+            // FIXED: Handle Arrays for all Lookup Fields
+            const rawName = f['Charter Name'];
+            const charterName = Array.isArray(rawName) ? rawName[0] : (rawName || "ROD2REEL");
+            
             document.title = `${charterName} Video — Rod2Reel`;
             document.getElementById('bizName').innerText = charterName.toUpperCase();
             
             document.getElementById('video').src = f['Video URL'] || "";
+            
+            // Review Array check
             if (f['Review']) { 
-                document.getElementById('reviewBtn').href = f['Review']; 
+                document.getElementById('reviewBtn').href = Array.isArray(f['Review']) ? f['Review'][0] : f['Review']; 
                 document.getElementById('reviewBtn').style.display = 'block'; 
             }
+            
             if (f['Social Post 1']) { 
                 document.getElementById('captionBox').style.display = 'block'; 
                 document.getElementById('captionText').innerText = f['Social Post 1']; 
             }
+            
+            // Logo Array check (Handles both attachment objects and simple URL arrays)
             if (f['Logo']) {
                 const logoImg = document.getElementById('shopLogo');
-                logoImg.src = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
+                const rawLogo = f['Logo'];
+                const logoUrl = Array.isArray(rawLogo) ? (rawLogo[0].url || rawLogo[0]) : rawLogo;
+                logoImg.src = logoUrl;
                 logoImg.style.display = 'block';
             }
+            
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
         } catch (e) {
+            console.error(e);
             document.getElementById('status').innerText = "Connection Error";
         }
     }
