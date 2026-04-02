@@ -17,8 +17,6 @@
         .btn-whatsapp { background: linear-gradient(135deg, #25D366, #1DA851); }
         .btn-sms { background: linear-gradient(135deg, var(--blue), #0051a8); }
         .btn:active { transform: scale(0.98); }
-
-        /* UPDATED FOOTER STYLE */
         .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border); width: 100%; max-width: 400px; }
         .footer-main { font-size: 12px; color: var(--gray); letter-spacing: 2px; font-weight: bold; margin-bottom: 6px; }
         .footer-link { font-size: 11px; color: var(--gray); text-decoration: none; display: block; margin-bottom: 4px; }
@@ -40,22 +38,27 @@
 <div class="footer">
     <div class="footer-main">POWERED BY ROD2REEL</div>
     <a href="mailto:hello@rod2reel.com" class="footer-link">hello@rod2reel.com</a>
-    <div class="footer-sub">+27 (0)68 364 4061</div>
+    <div class="footer-sub">+1 (573) 533-3433</div>
 </div>
 
 <script>
     function dispatch(type) {
         const urlParams = new URLSearchParams(window.location.search);
-        const recordId = urlParams.get('id');
+        
+        // These come from your Make.com email link
+        const charterName = urlParams.get('name') || "Charter"; 
+        const shortLink = urlParams.get('link') || "your video"; 
+        
         const input = document.getElementById('recipient').value.trim();
 
         if (!input) { alert("Please enter a mobile number."); return; }
 
-        const reelLink = `https://delivery.rod2reel.com/reel.html?id=${recordId}`;
-        const message = `Watch your video here:\n${reelLink}`;
+        // The professional message content
+        const message = `Hey! Your ${charterName} video is ready. Watch it here:\n${shortLink}`;
 
         if (type === 'whatsapp') {
             let phone = input.replace(/\D/g, '');
+            // Simple international logic: if it starts with 0, assume SA (27)
             if (phone.startsWith('0')) { phone = '27' + phone.substring(1); }
             window.location.assign(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`);
         } else if (type === 'sms') {
