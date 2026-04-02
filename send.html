@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dispatch Hub — Rod2Reel</title>
+    <title>Loading... — Rod2Reel</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; --grey: #666; }
@@ -43,13 +43,14 @@
     async function fetchInfo() {
         if (!recordId) return;
         try {
-            // FIXED: Added FIND and ARRAYJOIN to handle the lookupId array
             const formula = encodeURIComponent(`OR(FIND("${recordId}", ARRAYJOIN({lookupId})), {formId}="${recordId}")`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
             const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
             const data = await res.json();
             if (data.records && data.records.length > 0) {
                 const name = data.records[0].fields['Charter Name'] || "Charter";
+                // UPDATE: Dynamically changes the browser/link title
+                document.title = `${name} Video — Rod2Reel`;
                 document.getElementById('instruction').innerText = `${name} Video`.toUpperCase();
             }
         } catch (e) { document.getElementById('instruction').innerText = "ENTER DETAILS BELOW:"; }
