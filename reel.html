@@ -18,11 +18,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;tex
 .video-wrap{border-radius:24px; overflow:hidden; box-shadow:0 25px 60px rgba(0,0,0,0.8); margin-bottom:20px; background:#000; border:1px solid var(--border);}
 video{width:100%; display:block;}
 .btn{width:100%; padding:18px; border-radius:10px; font-weight:bold; font-size:14px; margin-bottom:12px; cursor:pointer; text-decoration:none; display:inline-block; color:var(--gold); border:1px solid var(--gold); text-transform:uppercase; letter-spacing:1px; background:transparent;}
+/* Caption Box Styling */
 .caption-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:20px; margin:10px 0 25px; text-align:left;}
-.copy-btn{background:rgba(245,166,35,0.1); border:1px solid var(--gold); color:var(--gold); font-size:10px; padding:5px; border-radius:6px; cursor:pointer; float:right;}
+#captionText{font-size: 14px; color: #ddd; line-height: 1.6; margin-bottom: 20px;}
+.copy-btn-container { text-align: center; width: 100%; }
+.copy-btn{background:rgba(245,166,35,0.1); border:1px solid var(--gold); color:var(--gold); font-size:11px; padding:8px 16px; border-radius:8px; cursor:pointer; text-transform:uppercase; font-weight:bold; letter-spacing:1px;}
+.copy-btn:active { background: var(--gold); color: #000; }
 .biz-logo{max-width:200px; margin:30px auto; display:none;}
-#captionText{font-size: 14px; color: #ddd; line-height: 1.6; margin-top: 10px;}
-/* Footer Styles */
 .footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
 .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
 .footer-sub { font-size: 11px; color: var(--grey); margin: 3px 0; }
@@ -36,8 +38,10 @@ video{width:100%; display:block;}
 <div class="video-wrap"><video id="video" controls playsinline></video></div>
 <a id="reviewBtn" class="btn" style="display:none;">Leave Us A Review</a>
 <div id="captionBox" class="caption-box" style="display:none;">
-<button class="copy-btn" onclick="copyText()">Copy Caption</button>
 <div id="captionText"></div>
+<div class="copy-btn-container">
+<button class="copy-btn" onclick="copyText()">Copy for Social Media</button>
+</div>
 </div>
 <button class="btn" onclick="downloadVideo()">Download Video</button>
 <img id="shopLogo" class="biz-logo">
