@@ -9,27 +9,19 @@
         :root { --gold: #F5A623; --bg: #080808; --surface: #111; --border: #222; --text: #fff; --grey: #666; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; text-align: center; }
-        
         .loader { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; }
         .loader h1 { font-family: 'Bebas Neue'; font-size: 28px; color: var(--gold); letter-spacing: 2px; animation: pulse 1.5s infinite; }
         @keyframes pulse { 0% { opacity: 0.4; } 50% { opacity: 1; } 100% { opacity: 0.4; } }
-        
         #main { display: none; padding: 60px 20px; }
         .biz-name { font-family: 'Bebas Neue'; font-size: 48px; letter-spacing: 3px; color: var(--gold); margin-bottom: 30px; }
         .container { max-width: 480px; margin: auto; }
-        
         .video-wrap { border-radius: 24px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); margin-bottom: 20px; background: #000; border: 1px solid var(--border); }
         video { width: 100%; display: block; }
-        
         .btn { width: 100%; padding: 18px 25px; border-radius: 10px; font-weight: bold; font-size: 14px; margin-bottom: 12px; cursor: pointer; text-decoration: none; display: inline-block; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 1px; background: transparent; }
-        
         .caption-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin: 10px 0 25px 0; text-align: left; }
         .caption-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: var(--gold); font-weight: bold; }
         .copy-btn { background: rgba(245,166,35,0.1); border: 1px solid var(--gold); color: var(--gold); font-size: 9px; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
-        
-        /* LOGO SIZE X 1.75 (from 140px to 245px) */
         .biz-logo { max-width: 245px; margin: 30px auto 10px; display: none; filter: grayscale(1) brightness(1.5); opacity: 0.7; }
-        
         .footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
         .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
         .footer-sub { font-size: 11px; color: var(--grey); margin: 3px 0; }
@@ -45,18 +37,13 @@
     <div id="bizName" class="biz-name">ROD2REEL</div>
     <div class="container">
         <div class="video-wrap"><video id="video" controls playsinline></video></div>
-        
         <a id="reviewBtn" href="#" class="btn" style="display:none;">Leave Us A Review</a>
-
         <div id="captionBox" class="caption-box" style="display:none;">
             <div class="caption-header">READY TO POST <button class="copy-btn" onclick="copyText()">Tap to Copy</button></div>
             <div id="captionText" style="font-size: 14px; color: #ddd; line-height: 1.6;"></div>
         </div>
-
         <button class="btn" onclick="downloadVideo()">Download Video</button>
-
         <img id="shopLogo" class="biz-logo" src="">
-
         <div class="footer">
             <div class="footer-main">Powered by Rod2Reel</div>
             <div class="footer-sub">hello@rod2reel.com</div>
@@ -74,7 +61,8 @@
     async function load() {
         if (!id) { document.getElementById('status').innerText = "Missing ID"; return; }
         try {
-            const formula = encodeURIComponent(`OR({lookupId}="${id}", {formId}="${id}")`);
+            // FIXED: Added FIND and ARRAYJOIN to handle the lookupId array
+            const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {formId}="${id}")`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
             const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` }, cache: "no-store" });
             const data = await res.json();
@@ -87,24 +75,19 @@
             const f = data.records[0].fields;
             document.getElementById('bizName').innerText = (f['Charter Name'] || "ROD2REEL").toUpperCase();
             document.getElementById('video').src = f['Video URL'] || "";
-            
             if (f['Review']) { 
                 document.getElementById('reviewBtn').href = f['Review']; 
                 document.getElementById('reviewBtn').style.display = 'block'; 
             }
-            
             if (f['Social Post 1']) { 
                 document.getElementById('captionBox').style.display = 'block'; 
                 document.getElementById('captionText').innerText = f['Social Post 1']; 
             }
-
             if (f['Logo']) {
                 const logoImg = document.getElementById('shopLogo');
-                // Handles if Logo is a URL string or an Airtable attachment array
                 logoImg.src = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
                 logoImg.style.display = 'block';
             }
-
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
         } catch (e) {
