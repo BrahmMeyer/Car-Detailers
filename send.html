@@ -13,11 +13,8 @@
         p { color: #666; font-size: 14px; margin-bottom: 20px; }
         input { width: 100%; padding: 16px; border-radius: 10px; border: 1px solid #333; background: #1a1a1a; color: var(--text); font-size: 16px; margin-bottom: 20px; outline: none; text-align: center; }
         .btn-group { display: flex; flex-direction: column; gap: 12px; }
-        
-        /* MATCHING EMAIL STYLE: Hollow Gold */
         .btn-send { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 16px; border-radius: 10px; font-weight: bold; font-size: 14px; cursor: pointer; text-decoration: none; display: block; text-transform: uppercase; letter-spacing: 1px; }
         .btn-send:active { transform: scale(0.98); background: rgba(245,166,35,0.05); }
-
         .footer-logo { margin-top: 30px; color: var(--grey); font-size: 11px; letter-spacing: 1.5px; font-weight: bold; text-transform: uppercase; }
     </style>
 </head>
@@ -25,7 +22,7 @@
 
 <div class="card">
     <h2>Dispatch Hub</h2>
-    <p>Enter details and choose method:</p>
+    <p id="instructionText">Enter details and choose method:</p>
     
     <input type="text" id="recipient" placeholder="Phone Number or Email" autocomplete="off">
     
@@ -39,16 +36,33 @@
 <div class="footer-logo">Powered by Rod2Reel</div>
 
 <script>
-    function dispatch(type) {
-        const urlParams = new URLSearchParams(window.location.search);
-        const recordId = urlParams.get('id');
-        const input = document.getElementById('recipient').value.trim();
+    const urlParams = new URLSearchParams(window.location.search);
+    const recordId = urlParams.get('id');
+    const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f031f95d5db82e8430';
+    const BASE = 'appGGs07d4FB6htwg';
+    const TABLE = 'tblCYkMaAOHrX0nwN';
 
+    async function updateName() {
+        if (!recordId) return;
+        try {
+            const formula = encodeURIComponent(`OR({lookupId}="${recordId}", {formId}="${recordId}")`);
+            const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
+            const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
+            const data = await res.json();
+            if (data.records && data.records.length > 0) {
+                const name = data.records[0].fields['Charter Name'] || "Charter";
+                document.getElementById('instructionText').innerText = `${name} Video`;
+            }
+        } catch (e) { console.error(e); }
+    }
+
+    function dispatch(type) {
+        const input = document.getElementById('recipient').value.trim();
         if (!input) { alert("Please enter a mobile number or email address."); return; }
 
         const reelLink = `https://delivery.rod2reel.com/reel.html?id=${recordId}`;
-        // CLEAN SINGLE MESSAGE
-        const message = `Your video experience is ready! View it here:\n${reelLink}`;
+        // UPDATED MESSAGE: Starts directly with "View it here:"
+        const message = `View it here:\n${reelLink}`;
 
         if (type === 'whatsapp') {
             let phone = input.replace(/\D/g, '');
@@ -60,6 +74,8 @@
             window.location.href = `mailto:${input}?subject=Your Video is Ready&body=${encodeURIComponent(message)}`;
         }
     }
+    
+    updateName();
 </script>
 </body>
 </html>
