@@ -3,68 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dispatch Hub — Rod2Reel</title>
+    <title>Your Experience — Rod2Reel</title>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; --green: #25D366; --blue: #007AFF; --gray: #666666; }
-        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; margin: 0; padding: 20px; text-align: center; }
-        .card { background: var(--surface); padding: 35px 30px; border-radius: 24px; border: 1px solid var(--border); width: 100%; max-width: 400px; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
-        h2 { color: var(--gold); margin-bottom: 12px; font-size: 24px; letter-spacing: 1px; }
-        p { color: #666; font-size: 14px; margin-bottom: 20px; }
-        input { width: 100%; padding: 16px; border-radius: 14px; border: 1px solid #333; background: #1a1a1a; color: var(--text); font-size: 18px; margin-bottom: 20px; outline: none; text-align: center; }
-        .btn-group { display: flex; flex-direction: column; gap: 12px; }
-        .btn { padding: 18px; border-radius: 14px; font-weight: bold; font-size: 15px; border: none; cursor: pointer; text-decoration: none; color: white; display: block; transition: transform 0.1s; }
-        .btn-whatsapp { background: linear-gradient(135deg, #25D366, #1DA851); }
-        .btn-sms { background: linear-gradient(135deg, var(--blue), #0051a8); }
-        .btn:active { transform: scale(0.98); }
-        .footer { margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border); width: 100%; max-width: 400px; }
-        .footer-main { font-size: 12px; color: var(--gray); letter-spacing: 2px; font-weight: bold; margin-bottom: 6px; }
-        .footer-link { font-size: 11px; color: var(--gray); text-decoration: none; display: block; margin-bottom: 4px; }
-        .footer-sub { font-size: 11px; color: var(--gray); display: block; }
+        :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; --gray: #666666; }
+        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; margin: 0; padding: 20px; display: flex; flex-direction: column; align-items: center; }
+        .container { max-width: 500px; width: 100%; text-align: center; }
+        h2 { color: var(--gold); letter-spacing: 1px; margin-bottom: 5px; }
+        .video-wrapper { width: 100%; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); margin-bottom: 20px; background: #000; }
+        video { width: 100%; display: block; }
+        .caption-box { background: var(--surface); padding: 15px; border-radius: 12px; border: 1px solid var(--border); color: #aaa; font-size: 14px; margin-bottom: 20px; text-align: left; }
+        .btn { width: 100%; padding: 16px; border-radius: 12px; font-weight: bold; cursor: pointer; text-decoration: none; display: block; margin-bottom: 10px; transition: 0.2s; border: none; }
+        .btn-download { background: var(--gold); color: #000; }
+        .btn-review { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
+        .footer { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--border); width: 100%; color: var(--gray); font-size: 11px; }
     </style>
 </head>
 <body>
 
-<div class="card">
-    <h2>Dispatch Hub</h2>
-    <p>Select delivery method:</p>
-    <input type="tel" id="recipient" placeholder="Mobile Number" autocomplete="off">
-    <div class="btn-group">
-        <button onclick="dispatch('whatsapp')" class="btn btn-whatsapp">SEND VIA WHATSAPP</button>
-        <button onclick="dispatch('sms')" class="btn btn-sms">SEND VIA SMS / TEXT</button>
+<div class="container">
+    <h2 id="display-name">Your Experience</h2>
+    <p style="color:#666; margin-bottom:20px;">Powered by Rod2Reel</p>
+
+    <div class="video-wrapper">
+        <video id="main-video" controls playsinline>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+
+    <div class="caption-box" id="caption-text">
+        Loading captions...
+    </div>
+
+    <a id="download-link" href="#" download="My_Experience.mp4" class="btn btn-download">DOWNLOAD HD REEL</a>
+    <a href="https://g.page/r/YOUR_REVIEW_LINK/review" class="btn btn-review">LEAVE A REVIEW</a>
+
+    <div class="footer">
+        <strong>ROD2REEL AUTOMATION</strong><br>
+        hello@rod2reel.com | +1 (573) 533-3433
     </div>
 </div>
 
-<div class="footer">
-    <div class="footer-main">POWERED BY ROD2REEL</div>
-    <a href="mailto:hello@rod2reel.com" class="footer-link">hello@rod2reel.com</a>
-    <div class="footer-sub">+1 (573) 533-3433</div>
-</div>
-
 <script>
-    function dispatch(type) {
-        const urlParams = new URLSearchParams(window.location.search);
-        
-        // These come from your Make.com email link
-        const charterName = urlParams.get('name') || "Charter"; 
-        const shortLink = urlParams.get('link') || "your video"; 
-        
-        const input = document.getElementById('recipient').value.trim();
+    const urlParams = new URLSearchParams(window.location.search);
+    const videoUrl = urlParams.get('video'); // From Cloudinary
+    const name = urlParams.get('name') || "Your Experience";
+    const captions = urlParams.get('caps') || "Check out this incredible footage from today's trip!";
 
-        if (!input) { alert("Please enter a mobile number."); return; }
-
-        // The professional message content
-        const message = `Hey! Your ${charterName} video is ready. Watch it here:\n${shortLink}`;
-
-        if (type === 'whatsapp') {
-            let phone = input.replace(/\D/g, '');
-            // Simple international logic: if it starts with 0, assume SA (27)
-            if (phone.startsWith('0')) { phone = '27' + phone.substring(1); }
-            window.location.assign(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`);
-        } else if (type === 'sms') {
-            window.location.assign(`sms:${input}?&body=${encodeURIComponent(message)}`);
-        }
+    // Update Page Content
+    if(videoUrl) {
+        document.getElementById('main-video').src = videoUrl;
+        document.getElementById('download-link').href = videoUrl;
     }
+    document.getElementById('display-name').innerText = name;
+    document.getElementById('caption-text').innerText = captions;
 </script>
 </body>
 </html>
