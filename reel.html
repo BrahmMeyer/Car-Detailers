@@ -21,14 +21,14 @@
         .video-wrap { border-radius: 24px; overflow: hidden; box-shadow: 0 25px 60px rgba(0,0,0,0.8); margin-bottom: 20px; background: #000; border: 1px solid var(--border); }
         video { width: 100%; display: block; }
         
-        /* UNIFIED BUTTON STYLE */
         .btn { width: 100%; padding: 18px 25px; border-radius: 10px; font-weight: bold; font-size: 14px; margin-bottom: 12px; cursor: pointer; text-decoration: none; display: inline-block; color: var(--gold); border: 1px solid var(--gold); text-transform: uppercase; letter-spacing: 1px; background: transparent; }
         
         .caption-box { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 20px; margin: 10px 0 25px 0; text-align: left; }
         .caption-header { display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 11px; color: var(--gold); font-weight: bold; }
         .copy-btn { background: rgba(245,166,35,0.1); border: 1px solid var(--gold); color: var(--gold); font-size: 9px; padding: 4px 8px; border-radius: 6px; cursor: pointer; }
         
-        .biz-logo { max-width: 140px; margin: 30px auto 10px; display: none; filter: grayscale(1) brightness(1.5); opacity: 0.6; }
+        /* LOGO SIZE X 1.75 (from 140px to 245px) */
+        .biz-logo { max-width: 245px; margin: 30px auto 10px; display: none; filter: grayscale(1) brightness(1.5); opacity: 0.7; }
         
         .footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
         .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
@@ -88,7 +88,6 @@
             document.getElementById('bizName').innerText = (f['Charter Name'] || "ROD2REEL").toUpperCase();
             document.getElementById('video').src = f['Video URL'] || "";
             
-            // Check for Review link
             if (f['Review']) { 
                 document.getElementById('reviewBtn').href = f['Review']; 
                 document.getElementById('reviewBtn').style.display = 'block'; 
@@ -101,6 +100,7 @@
 
             if (f['Logo']) {
                 const logoImg = document.getElementById('shopLogo');
+                // Handles if Logo is a URL string or an Airtable attachment array
                 logoImg.src = Array.isArray(f['Logo']) ? f['Logo'][0].url : f['Logo'];
                 logoImg.style.display = 'block';
             }
