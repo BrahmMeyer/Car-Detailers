@@ -48,8 +48,11 @@
             const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
             const data = await res.json();
             if (data.records && data.records.length > 0) {
-                const name = data.records[0].fields['Charter Name'] || "Charter";
-                // UPDATE: Dynamically changes the browser/link title
+                const f = data.records[0].fields;
+                // FIXED: Handle Array for Charter Name
+                const rawName = f['Charter Name'];
+                const name = Array.isArray(rawName) ? rawName[0] : (rawName || "Charter");
+                
                 document.title = `${name} Video — Rod2Reel`;
                 document.getElementById('instruction').innerText = `${name} Video`.toUpperCase();
             }
