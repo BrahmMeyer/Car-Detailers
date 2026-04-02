@@ -173,7 +173,7 @@
 <body>
 
 <div id="loader" class="loader">
-    <h1>Preparing Your Experience...</h1>
+    <h1 id="loadText">Preparing Your Experience...</h1>
 </div>
 
 <div id="main">
@@ -186,7 +186,7 @@
             <video id="video" controls playsinline></video>
         </div>
 
-        <a id="reviewBtn" href="#" class="btn">LEAVE US A REVIEW</a>
+        <a id="reviewBtn" href="#" class="btn" style="display:none;">LEAVE US A REVIEW</a>
         
         <div id="captionBox" class="caption-box" style="display:none;">
             <div class="caption-header">
@@ -215,8 +215,14 @@
     const TABLE = 'tblCYkMaAOHrX0nwN';
 
     async function load() {
+        if (!id) {
+            document.getElementById('loadText').innerText = "ERROR: No ID provided in URL.";
+            return;
+        }
+
         try {
-            const formula = encodeURIComponent(`{formId}="${id}"`);
+            // Using lookupId to match your new Airtable setup
+            const formula = encodeURIComponent(`{lookupId}="${id}"`);
             const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
 
             const res = await fetch(url, {
@@ -227,27 +233,33 @@
             const data = await res.json();
 
             if (!data.records || data.records.length === 0) {
-                throw new Error("Delivery not found");
+                document.getElementById('loadText').innerText = "Delivery Not Found (Check lookupId)";
+                return;
             }
 
             const f = data.records[0].fields;
 
+            // 1. Set Charter Name
             if(f['Charter Name']) {
                 document.getElementById('bizName').innerText = f['Charter Name'].toUpperCase();
             }
             
+            // 2. Set Video
             document.getElementById('video').src = f['Video URL'];
 
+            // 3. Set Review Link
             if (f['Review']) {
                 document.getElementById('reviewBtn').href = f['Review'];
+                document.getElementById('reviewBtn').style.display = 'inline-block';
             }
 
-            if (f['Logo URL']) {
+            // 4. Set Logo (Mapped to column "Logo")
+            if (f['Logo']) {
                 let logoUrl = "";
-                if (Array.isArray(f['Logo URL'])) {
-                    logoUrl = f['Logo URL'][0].url; 
+                if (Array.isArray(f['Logo'])) {
+                    logoUrl = f['Logo'][0].url; 
                 } else {
-                    logoUrl = f['Logo URL']; 
+                    logoUrl = f['Logo']; 
                 }
 
                 if (logoUrl) {
@@ -257,16 +269,19 @@
                 }
             }
 
+            // 5. Set Caption
             if (f['Social Post 1']) {
                 document.getElementById('captionBox').style.display = 'block';
                 document.getElementById('captionText').innerText = f['Social Post 1'];
             }
 
+            // Show UI
             document.getElementById('loader').style.display = 'none';
             document.getElementById('main').style.display = 'block';
 
         } catch(e) {
             console.error(e);
+            document.getElementById('loadText').innerText = "System Error. Please try again.";
         }
     }
 
@@ -284,13 +299,13 @@
         if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
         const a = document.createElement('a');
         a.href = u;
-        // BRAND UPDATE 3: File Name
         a.download = "My_Experience_Video.mp4";
         a.click();
     }
 
-    if(id) load();
+    load();
 </script>
 
 </body>
+</html>
 </html>
