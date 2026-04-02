@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <title>Your Vehicle is Ready 🚗</title>
-    <meta property="og:title" content="Your Vehicle is Ready 🚗">
+    <title>Your Vehicle is Ready</title>
+    <meta property="og:title" content="Your Vehicle is Ready">
     <meta property="og:type" content="website">
 
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -60,7 +60,6 @@
 
         .header {
             padding: 60px 20px 30px;
-            border-bottom: 1px solid var(--border);
         }
 
         .biz-name {
@@ -89,34 +88,23 @@
 
         .btn {
             width: 100%;
-            padding: 20px;
-            border-radius: 16px;
-            font-weight: 700;
-            font-size: 15px;
+            padding: 18px 25px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 14px;
             margin-bottom: 12px;
             cursor: pointer;
-            border: none;
             transition: all 0.2s ease;
             text-decoration: none;
-            display: block;
+            display: inline-block;
+            background-color: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .btn:active { transform: scale(0.96); }
-
-        .btn-primary { 
-            background: var(--gold); 
-            color: #000; 
-            text-transform: uppercase; 
-            letter-spacing: 1px; 
-        }
-
-        .btn-blue { 
-            background: var(--blue); 
-            color: #fff; 
-            text-transform: uppercase; 
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(0, 122, 255, 0.3);
-        }
 
         /* CAPTION BOX */
         .caption-box {
@@ -162,14 +150,20 @@
         }
 
         .footer {
-            margin-top: 50px;
+            margin-top: 30px;
             padding-bottom: 60px;
-            border-top: 1px solid var(--border);
-            padding-top: 30px;
+            padding-top: 10px;
         }
 
-        .footer-main { font-size: 11px; letter-spacing: 2px; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
-        .footer-sub { font-size: 12px; color: #666; margin: 3px 0; display: block; }
+        .workshop-logo {
+            max-width: 120px;
+            margin: 0 auto 30px auto;
+            display: block;
+            filter: drop-shadow(0 0 15px rgba(245, 166, 35, 0.3));
+        }
+
+        .footer-main { font-size: 12px; letter-spacing: 2px; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
+        .footer-sub { font-size: 11px; color: var(--gold); margin: 3px 0; display: block; }
     </style>
 </head>
 
@@ -181,7 +175,7 @@
 
 <div id="main">
     <div class="header">
-        <div id="bizName" class="biz-name">XTERNAL SHINE</div>
+        <div id="bizName" class="biz-name">LOADING...</div>
     </div>
 
     <div class="container">
@@ -189,7 +183,7 @@
             <video id="video" controls playsinline></video>
         </div>
 
-        <a id="reviewBtn" href="https://xternalshine.co.za/" class="btn btn-primary">⭐ LEAVE US A REVIEW</a>
+        <a id="reviewBtn" href="#" class="btn">LEAVE US A REVIEW</a>
         
         <div id="captionBox" class="caption-box" style="display:none;">
             <div class="caption-header">
@@ -199,9 +193,10 @@
             <div id="captionText" class="caption-text"></div>
         </div>
 
-        <button class="btn btn-blue" onclick="download()">⬇ DOWNLOAD VIDEO</button>
+        <button class="btn" onclick="download()">DOWNLOAD VIDEO</button>
 
         <div class="footer">
+            <img id="shopLogo" class="workshop-logo" src="" style="display:none;">
             <div class="footer-main">POWERED BY ROD2REEL</div>
             <div class="footer-sub">hello@rod2reel.com</div>
             <div class="footer-sub">+27 (0)68 364 4061</div>
@@ -244,6 +239,12 @@
                 document.getElementById('reviewBtn').href = f['Review'];
             }
 
+            if (f['Logo URL']) {
+                const logoImg = document.getElementById('shopLogo');
+                logoImg.src = f['Logo URL'];
+                logoImg.style.display = 'block';
+            }
+
             if (f['Social Post 1']) {
                 document.getElementById('captionBox').style.display = 'block';
                 document.getElementById('captionText').innerText = f['Social Post 1'];
@@ -271,7 +272,7 @@
         if(u.includes('cloudinary')) u = u.replace('/upload/','/upload/fl_attachment/');
         const a = document.createElement('a');
         a.href = u;
-        a.download = "XternalShine_Video.mp4";
+        a.download = "MyVehicle_Video.mp4";
         a.click();
     }
 
