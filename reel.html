@@ -17,6 +17,7 @@
             --surface: #111;
             --border: #222;
             --text: #fff;
+            --footer-grey: #666;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -156,14 +157,16 @@
         }
 
         .workshop-logo {
-            max-width: 120px;
+            max-width: 140px;
+            max-height: 100px;
             margin: 0 auto 30px auto;
             display: block;
             filter: drop-shadow(0 0 15px rgba(245, 166, 35, 0.3));
+            object-fit: contain;
         }
 
-        .footer-main { font-size: 12px; letter-spacing: 2px; color: var(--gold); margin-bottom: 8px; font-weight: bold; }
-        .footer-sub { font-size: 11px; color: var(--gold); margin: 3px 0; display: block; }
+        .footer-main { font-size: 12px; letter-spacing: 2px; color: var(--footer-grey); margin-bottom: 8px; font-weight: bold; }
+        .footer-sub { font-size: 11px; color: var(--footer-grey); margin: 3px 0; display: block; }
     </style>
 </head>
 
@@ -196,7 +199,7 @@
         <button class="btn" onclick="download()">DOWNLOAD VIDEO</button>
 
         <div class="footer">
-            <img id="shopLogo" class="workshop-logo" src="" style="display:none;">
+            <img id="shopLogo" class="workshop-logo" src="" crossorigin="anonymous" style="display:none;">
             <div class="footer-main">POWERED BY ROD2REEL</div>
             <div class="footer-sub">hello@rod2reel.com</div>
             <div class="footer-sub">+27 (0)68 364 4061</div>
@@ -239,10 +242,20 @@
                 document.getElementById('reviewBtn').href = f['Review'];
             }
 
+            // Enhanced Logo Handling
             if (f['Logo URL']) {
-                const logoImg = document.getElementById('shopLogo');
-                logoImg.src = f['Logo URL'];
-                logoImg.style.display = 'block';
+                let logoUrl = "";
+                if (Array.isArray(f['Logo URL'])) {
+                    logoUrl = f['Logo URL'][0].url; 
+                } else {
+                    logoUrl = f['Logo URL']; 
+                }
+
+                if (logoUrl) {
+                    const logoImg = document.getElementById('shopLogo');
+                    logoImg.src = logoUrl;
+                    logoImg.style.display = 'block';
+                }
             }
 
             if (f['Social Post 1']) {
