@@ -9,7 +9,7 @@
 body{background:var(--bg); color:var(--text); font-family:sans-serif; text-align:center; padding:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height: 100vh; margin:0;}
 .card { background: var(--surface); padding: 30px; border-radius: 20px; border: 1px solid var(--border); width: 100%; max-width: 350px; }
 h2 { color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; font-size: 20px; }
-input{padding:14px; width:100%; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; margin-bottom: 15px; box-sizing: border-box; text-align: center;}
+input{padding:14px; width:100%; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; margin-bottom: 15px; box-sizing: border-box; text-align: center; font-size: 16px;}
 button{padding:14px; width:100%; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
 button:active { background: rgba(245,166,35,0.1); }
 </style>
@@ -28,6 +28,8 @@ const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f
 const BASE = 'appGGs07d4FB6htwg';
 const TABLE = 'tblCYkMaAOHrX0nwN';
 
+let isSending = false;
+
 async function load() {
     if(!id) return;
     try {
@@ -44,11 +46,12 @@ async function load() {
 }
 
 function send(type) {
+    if (isSending) return;
     const val = document.getElementById('input').value.trim();
     if(!val) { alert("Please enter details."); return; }
-    const link = `https://delivery.rod2reel.com/reel.html?id=${id}`;
     
-    // This is the message sent to the client
+    isSending = true;
+    const link = `https://delivery.rod2reel.com/reel.html?id=${id}`;
     const msg = `Your Video: ${link}`;
 
     if (type === 'whatsapp') {
@@ -60,6 +63,8 @@ function send(type) {
     } else if (type === 'email') {
         window.location.href = `mailto:${val}?subject=Your Video&body=${encodeURIComponent(msg)}`;
     }
+
+    setTimeout(() => { isSending = false; }, 2000);
 }
 load();
 </script>
