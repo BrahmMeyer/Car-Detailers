@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Loading... — Rod2Reel</title>
+<title>🎬 Your Reel is Ready</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root { --gold:#F5A623; --bg:#080808; --surface:#111; --border:#222; --text:#fff; --grey:#666; }
@@ -72,7 +72,9 @@ let review = f['Review'];
 if (Array.isArray(review)) review = review[0];
 let logo = f['Logo'];
 let logoUrl = Array.isArray(logo) ? (logo[0]?.url || logo[0]) : logo;
-document.title = `${name} Video — Rod2Reel`;
+
+document.title = "🎬 Your Reel is Ready";
+
 document.getElementById('bizName').innerText = name.toUpperCase();
 document.getElementById('video').src = f['Video URL'] || "";
 if (review) { document.getElementById('reviewBtn').href = review; document.getElementById('reviewBtn').style.display = 'block'; }
