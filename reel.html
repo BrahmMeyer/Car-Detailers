@@ -9,21 +9,22 @@
 :root { --gold:#F5A623; --bg:#080808; --surface:#111; --border:#222; --text:#fff; --grey:#666; }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;text-align:center;}
-#loader{height:100vh;display:flex;justify-content:center;align-items:center;}
-#main{display:none;padding:40px 20px;}
-.biz-name{font-family:'Bebas Neue'; font-size:42px; color:var(--gold); margin-bottom:25px;}
+#loader{height:100vh;display:flex;justify-content:center;align-items:center;color:var(--gold);}
+#main{display:none;padding:60px 20px;}
+.biz-name{font-family:'Bebas Neue'; font-size:48px; color:var(--gold); margin-bottom:30px; letter-spacing:2px;}
 .container{max-width:480px; margin:auto;}
-.video-wrap{border-radius:24px; overflow:hidden; border:1px solid var(--border); margin-bottom:20px;}
+.video-wrap{border-radius:24px; overflow:hidden; border:1px solid var(--border); margin-bottom:25px; background:#000;}
 video{width:100%; display:block;}
-.btn{width:100%; padding:14px; border-radius:8px; font-weight:bold; font-size:14px; margin-bottom:12px; cursor:pointer; text-decoration:none; display:inline-block; border:1px solid var(--gold); text-transform:uppercase; letter-spacing:1px; background:transparent; color:var(--gold);}
-.thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:20px; text-align:left;}
-#captionText{font-size: 15px; color: #ddd; line-height: 1.6;}
-.footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
-.footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+.btn{width:100%; padding:16px; border-radius:10px; font-weight:bold; font-size:14px; margin-bottom:15px; cursor:pointer; text-decoration:none; display:inline-block; border:2px solid var(--gold); text-transform:uppercase; letter-spacing:1.5px; background:transparent; color:var(--gold); transition: 0.3s;}
+.btn:hover{background:rgba(245, 166, 35, 0.1);}
+.thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:25px; text-align:left;}
+#captionText{font-size: 15px; color: #bbb; line-height: 1.6;}
+.footer { margin-top: 50px; padding-top: 30px; border-top: 1px solid #222; }
+.footer-main { font-size: 12px; color: var(--grey); letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
 </style>
 </head>
 <body>
-<div id="loader"><h1>Preparing Your Experience...</h1></div>
+<div id="loader"><h1>LOADING EXPERIENCE...</h1></div>
 <div id="main">
     <div id="bizName" class="biz-name">ROD2REEL</div>
     <div class="container">
@@ -31,7 +32,7 @@ video{width:100%; display:block;}
         <a id="reviewBtn" class="btn" style="display:none;">Leave Us A Review</a>
         <div id="thankYouBox" class="thank-you-box" style="display:none;"><div id="captionText"></div></div>
         <button class="btn" onclick="downloadVideo()">Download Video</button>
-        <div class="footer"><div class="footer-main">Powered by Rod2Reel</div></div>
+        <div class="footer"><div class="footer-main">POWERED BY ROD2REEL</div></div>
     </div>
 </div>
 <script>
