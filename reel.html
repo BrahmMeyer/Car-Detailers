@@ -3,84 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎬 Your Reveal is Ready</title>
+<title>🎬 Your Reel is Ready</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root { --gold:#F5A623; --bg:#080808; --surface:#111; --border:#222; --text:#fff; --grey:#666; }
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;text-align:center;}
-.loader{height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;}
-.loader h1{font-family:'Bebas Neue'; font-size:28px; color:var(--gold); letter-spacing:2px; animation:pulse 1.5s infinite;}
-@keyframes pulse{0%{opacity:0.4;}50%{opacity:1;}100%{opacity:0.4;}}
+.loader{height:100vh;display:flex;justify-content:center;align-items:center;}
 #main{display:none;padding:40px 20px;}
-.biz-name{font-family:'Bebas Neue'; font-size:42px; letter-spacing:3px; color:var(--gold); margin-bottom:25px;}
+.biz-name{font-family:'Bebas Neue'; font-size:42px; color:var(--gold); margin-bottom:25px;}
 .container{max-width:480px; margin:auto;}
-.video-wrap{border-radius:24px; overflow:hidden; box-shadow:0 25px 60px rgba(0,0,0,0.8); margin-bottom:20px; background:#000; border:1px solid var(--border);}
+.video-wrap{border-radius:24px; overflow:hidden; border:1px solid var(--border); margin-bottom:20px;}
 video{width:100%; display:block;}
-.btn{width:100%; padding:18px; border-radius:12px; font-weight:bold; font-size:14px; margin-bottom:12px; cursor:pointer; text-decoration:none; display:inline-block; text-transform:uppercase; letter-spacing:1px; transition: 0.3s;}
-.btn-review { background: var(--gold); color: var(--bg); border: none; font-size: 16px; box-shadow: 0 4px 15px rgba(245,166,35,0.3); }
-.btn-download { border: 1px solid var(--border); color: var(--grey); background: transparent; }
-.thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin:10px 0 25px; text-align:left;}
-.thank-you-box h3 { font-family: 'Bebas Neue'; color: var(--gold); font-size: 20px; margin-bottom: 10px; letter-spacing: 1px; }
-#captionText{font-size: 15px; color: #ddd; line-height: 1.6; font-style: italic;}
+.btn{width:100%; padding:14px; border-radius:8px; font-weight:bold; font-size:14px; margin-bottom:12px; cursor:pointer; text-decoration:none; display:inline-block; border:1px solid var(--gold); text-transform:uppercase; letter-spacing:1px; background:transparent; color:var(--gold);}
+.thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:20px; text-align:left;}
+#captionText{font-size: 15px; color: #ddd; line-height: 1.6;}
 .biz-logo{max-width:160px; margin:30px auto; display:none;}
-.footer { margin-top: 40px; padding: 25px 0; border-top: 1px solid #222; }
-.footer-main { font-size: 11px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
+.footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
+.footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; }
 </style>
 </head>
 <body>
-<div id="loader" class="loader"><h1 id="status">Generating Your Reveal...</h1></div>
+<div id="loader"><h1>Preparing Your Experience...</h1></div>
 <div id="main">
-<div id="bizName" class="biz-name">ROD2REEL</div>
-<div class="container">
-<div class="video-wrap"><video id="video" controls playsinline></video></div>
-<a id="reviewBtn" class="btn btn-review" style="display:none;">Leave a 5-Star Review</a>
-<div id="thankYouBox" class="thank-you-box" style="display:none;">
-<h3>A Note From Us</h3>
-<div id="captionText"></div>
-</div>
-<button class="btn btn-download" onclick="downloadVideo()">Download High-Res Reel</button>
-<img id="shopLogo" class="biz-logo">
-<div class="footer">
-<div class="footer-main">Powered by Rod2Reel</div>
-</div>
-</div>
+    <div id="bizName" class="biz-name">ROD2REEL</div>
+    <div class="container">
+        <div class="video-wrap"><video id="video" controls playsinline></video></div>
+        <a id="reviewBtn" class="btn" style="display:none;">Leave Us A Review</a>
+        <div id="thankYouBox" class="thank-you-box" style="display:none;"><div id="captionText"></div></div>
+        <button class="btn" onclick="downloadVideo()">Download Video</button>
+        <img id="shopLogo" class="biz-logo">
+        <div class="footer"><div class="footer-main">Powered by Rod2Reel</div></div>
+    </div>
 </div>
 <script>
 const id = new URLSearchParams(window.location.search).get('id');
 const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f031f95d5db82e8430';
 const BASE = 'appGGs07d4FB6htwg';
 const TABLE = 'tblCYkMaAOHrX0nwN';
-
 async function load() {
-if (!id) { document.getElementById('status').innerText = "Missing ID"; return; }
-try {
-const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {formId}="${id}")`);
-const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
-const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
-const data = await res.json();
-if (!data.records || data.records.length === 0) { document.getElementById('status').innerText = "Finalizing Video..."; return; }
-const f = data.records[0].fields;
-let name = f['Charter Name'];
-if (Array.isArray(name)) name = name[0];
-let review = f['Review'];
-if (Array.isArray(review)) review = review[0];
-let logo = f['Logo'];
-let logoUrl = Array.isArray(logo) ? (logo[0]?.url || logo[0]) : logo;
-
-document.getElementById('bizName').innerText = (name || "ROD2REEL").toUpperCase();
-document.getElementById('video').src = f['Video URL'] || "";
-if (review) { document.getElementById('reviewBtn').href = review; document.getElementById('reviewBtn').style.display = 'block'; }
-if (f['Social Post 1']) { document.getElementById('thankYouBox').style.display = 'block'; document.getElementById('captionText').innerText = f['Social Post 1']; }
-if (logoUrl) { document.getElementById('shopLogo').src = logoUrl; document.getElementById('shopLogo').style.display = 'block'; }
-document.getElementById('loader').style.display = 'none';
-document.getElementById('main').style.display = 'block';
-} catch (e) { document.getElementById('status').innerText = "Connection Error"; }
+    if (!id) return;
+    try {
+        const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {formId}="${id}")`);
+        const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
+        const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
+        const data = await res.json();
+        if (!data.records || data.records.length === 0) return;
+        const f = data.records[0].fields;
+        let name = f['Charter Name']; if (Array.isArray(name)) name = name[0];
+        let review = f['Review']; if (Array.isArray(review)) review = review[0];
+        let logo = f['Logo']; let logoUrl = Array.isArray(logo) ? (logo[0]?.url || logo[0]) : logo;
+        document.getElementById('bizName').innerText = (name || "ROD2REEL").toUpperCase();
+        document.getElementById('video').src = f['Video URL'] || "";
+        if (review) { document.getElementById('reviewBtn').href = review; document.getElementById('reviewBtn').style.display = 'block'; }
+        if (f['Social Post 1']) { document.getElementById('thankYouBox').style.display = 'block'; document.getElementById('captionText').innerText = f['Social Post 1']; }
+        if (logoUrl) { document.getElementById('shopLogo').src = logoUrl; document.getElementById('shopLogo').style.display = 'block'; }
+        document.getElementById('loader').style.display = 'none';
+        document.getElementById('main').style.display = 'block';
+    } catch (e) { console.error(e); }
 }
 function downloadVideo() { 
-let url = document.getElementById('video').src;
-if (url && url.includes('cloudinary')) url = url.replace('/upload/', '/upload/fl_attachment/');
-if(url){ const a = document.createElement('a'); a.href = url; a.download = "reel.mp4"; a.click(); }
+    let url = document.getElementById('video').src;
+    if (url && url.includes('cloudinary')) url = url.replace('/upload/', '/upload/fl_attachment/');
+    if(url){ const a = document.createElement('a'); a.href = url; a.download = "reel.mp4"; a.click(); }
 }
 load();
 </script>
