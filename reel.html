@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🎬 Your Reel is Ready</title>
+
+<meta property="og:title" content="Your Transformation is Ready! 🔥">
+<meta property="og:description" content="Check out the high-def reveal of your detail. Open to view.">
+<meta property="og:image" content="https://res.cloudinary.com/dlzvg2vbt/image/upload/v1712310000/logo_gold.png"> <meta property="og:type" content="video.other">
+
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root { --gold:#F5A623; --bg:#080808; --surface:#111; --border:#222; --text:#fff; --grey:#666; }
@@ -18,11 +23,11 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;tex
 .video-wrap{border-radius:24px; overflow:hidden; box-shadow:0 25px 60px rgba(0,0,0,0.8); margin-bottom:20px; background:#000; border:1px solid var(--border);}
 video{width:100%; display:block;}
 .btn{width:100%; padding:18px; border-radius:10px; font-weight:bold; font-size:14px; margin-bottom:12px; cursor:pointer; text-decoration:none; display:inline-block; color:var(--gold); border:1px solid var(--gold); text-transform:uppercase; letter-spacing:1px; background:transparent;}
+.btn-primary { background: var(--gold); color: var(--bg); border: none; }
 .caption-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:20px; margin:10px 0 25px; text-align:left;}
 #captionText{font-size: 14px; color: #ddd; line-height: 1.6; margin-bottom: 20px;}
 .copy-btn-container { text-align: center; width: 100%; }
 .copy-btn{background:transparent; border:1px solid #333; color:#777; font-size:9px; padding:5px 12px; border-radius:6px; cursor:pointer; text-transform:uppercase; font-weight:bold; letter-spacing:1px;}
-.copy-btn:active { background: #222; color: #fff; }
 .biz-logo{max-width:200px; margin:30px auto; display:none;}
 .footer { margin-top: 40px; padding-top: 25px; border-top: 1px solid #222; }
 .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 2px; font-weight: bold; text-transform: uppercase; margin-bottom: 8px; }
@@ -35,7 +40,7 @@ video{width:100%; display:block;}
 <div id="bizName" class="biz-name">ROD2REEL</div>
 <div class="container">
 <div class="video-wrap"><video id="video" controls playsinline></video></div>
-<a id="reviewBtn" class="btn" style="display:none;">Leave Us A Review</a>
+<a id="reviewBtn" class="btn btn-primary" style="display:none;">Leave Us A Review</a>
 <div id="captionBox" class="caption-box" style="display:none;">
 <div id="captionText"></div>
 <div class="copy-btn-container">
@@ -63,17 +68,15 @@ const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {fo
 const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
 const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
 const data = await res.json();
-if (!data.records || data.records.length === 0) { document.getElementById('status').innerText = "No video found"; return; }
+if (!data.records || data.records.length === 0) { document.getElementById('status').innerText = "Video Processing..."; return; }
 const f = data.records[0].fields;
-let name = f['Charter Name'];
+let name = f['Charter Name']; // Keep field name for now or update in Airtable to 'Business Name'
 if (Array.isArray(name)) name = name[0];
 name = name || "ROD2REEL";
 let review = f['Review'];
 if (Array.isArray(review)) review = review[0];
 let logo = f['Logo'];
 let logoUrl = Array.isArray(logo) ? (logo[0]?.url || logo[0]) : logo;
-
-document.title = "🎬 Your Reel is Ready";
 
 document.getElementById('bizName').innerText = name.toUpperCase();
 document.getElementById('video').src = f['Video URL'] || "";
