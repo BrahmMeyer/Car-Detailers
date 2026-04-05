@@ -19,27 +19,72 @@ video{width:100%; display:block;}
 .btn:hover{background:rgba(245, 166, 35, 0.1);}
 .thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:25px; text-align:left;}
 #captionText{font-size: 15px; color: #bbb; line-height: 1.6;}
+
+.caption-label {
+    color: var(--gold);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+.copy-btn {
+    margin-top: 15px;
+    padding: 10px 14px;
+    font-size: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--gold);
+    background: transparent;
+    color: #bbb;
+    cursor: pointer;
+    display: inline-block;
+    transition: 0.3s;
+}
+
+.copy-btn:hover {
+    background: rgba(245, 166, 35, 0.1);
+    color: var(--gold);
+}
+
 .footer { margin-top: 50px; padding-top: 30px; border-top: 1px solid #222; }
 .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
 </style>
 </head>
 <body>
+
 <div id="loader"><h1>LOADING EXPERIENCE...</h1></div>
+
 <div id="main">
     <div id="bizName" class="biz-name">ROD2REEL</div>
+
     <div class="container">
-        <div class="video-wrap"><video id="video" controls playsinline></video></div>
+        <div class="video-wrap">
+            <video id="video" controls playsinline></video>
+        </div>
+
         <a id="reviewBtn" class="btn" style="display:none;">Leave Us A Review</a>
-        <div id="thankYouBox" class="thank-you-box" style="display:none;"><div id="captionText"></div></div>
+
+        <div id="thankYouBox" class="thank-you-box" style="display:none;">
+            <div class="caption-label">Social Media Caption</div>
+            <div id="captionText"></div>
+            <button class="copy-btn" onclick="copyCaption()">📋 Copy</button>
+        </div>
+
         <button class="btn" onclick="downloadVideo()">Download Video</button>
-        <div class="footer"><div class="footer-main">POWERED BY ROD2REEL</div></div>
+
+        <div class="footer">
+            <div class="footer-main">POWERED BY ROD2REEL</div>
+        </div>
     </div>
 </div>
+
 <script>
 const id = new URLSearchParams(window.location.search).get('id');
 const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f031f95d5db82e8430';
 const BASE = 'appGGs07d4FB6htwg';
 const TABLE = 'tblCYkMaAOHrX0nwN';
+
 async function load() {
     if (!id) return;
     try {
@@ -47,24 +92,60 @@ async function load() {
         const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
         const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
         const data = await res.json();
+
         if (!data.records || data.records.length === 0) return;
+
         const f = data.records[0].fields;
-        let name = f['Charter Name']; if (Array.isArray(name)) name = name[0];
-        let review = f['Review']; if (Array.isArray(review)) review = review[0];
+
+        let name = f['Charter Name']; 
+        if (Array.isArray(name)) name = name[0];
+
+        let review = f['Review']; 
+        if (Array.isArray(review)) review = review[0];
+
         document.getElementById('bizName').innerText = (name || "ROD2REEL").toUpperCase();
         document.getElementById('video').src = f['Video URL'] || "";
-        if (review) { document.getElementById('reviewBtn').href = review; document.getElementById('reviewBtn').style.display = 'block'; }
-        if (f['Social Post 1']) { document.getElementById('thankYouBox').style.display = 'block'; document.getElementById('captionText').innerText = f['Social Post 1']; }
+
+        if (review) {
+            document.getElementById('reviewBtn').href = review;
+            document.getElementById('reviewBtn').style.display = 'block';
+        }
+
+        if (f['Social Post 1']) {
+            document.getElementById('thankYouBox').style.display = 'block';
+            document.getElementById('captionText').innerText = f['Social Post 1'];
+        }
+
         document.getElementById('loader').style.display = 'none';
         document.getElementById('main').style.display = 'block';
+
     } catch (e) { console.error(e); }
 }
+
 function downloadVideo() { 
     let url = document.getElementById('video').src;
     if (url && url.includes('cloudinary')) url = url.replace('/upload/', '/upload/fl_attachment/');
-    if(url){ const a = document.createElement('a'); a.href = url; a.download = "reel.mp4"; a.click(); }
+    if(url){
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = "reel.mp4";
+        a.click();
+    }
 }
+
+function copyCaption() {
+    const text = document.getElementById('captionText').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+        const btn = document.querySelector('.copy-btn');
+        btn.innerText = "✓ Copied";
+        setTimeout(() => {
+            btn.innerText = "📋 Copy";
+        }, 2000);
+    });
+}
+
 load();
 </script>
+
 </body>
 </html>
