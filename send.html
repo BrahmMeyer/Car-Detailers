@@ -7,66 +7,41 @@
 <style>
 :root { --gold: #F5A623; --bg: #080808; --surface: #111111; --border: #222222; --text: #FFFFFF; }
 body{background:var(--bg); color:var(--text); font-family:sans-serif; text-align:center; padding:40px; display:flex; flex-direction:column; align-items:center; justify-content:center; min-height: 100vh; margin:0;}
-.card { background: var(--surface); padding: 30px; border-radius: 20px; border: 1px solid var(--border); width: 100%; max-width: 350px; }
-h2 { color: var(--gold); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; font-size: 20px; }
-input{padding:14px; width:100%; border-radius: 8px; border: 1px solid #333; background: #1a1a1a; color: #fff; margin-bottom: 15px; box-sizing: border-box; text-align: center; font-size: 16px;}
-button{padding:14px; width:100%; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;}
-button:active { background: rgba(245,166,35,0.1); }
+.card { background: var(--surface); padding: 30px; border-radius: 20px; border: 1px solid var(--border); width: 100%; max-width: 350px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+h2 { color: var(--gold); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; font-size: 18px; font-weight: 600; }
+p { color: #666; font-size: 12px; margin-bottom: 20px; line-height: 1.4; }
+input{padding:14px; width:100%; border-radius: 8px; border: 1px solid #333; background: #000; color: #fff; margin-bottom: 15px; box-sizing: border-box; text-align: center; font-size: 16px; outline: none;}
+input:focus { border-color: var(--gold); }
+button{padding:14px; width:100%; border-radius: 8px; border: 1px solid var(--gold); background: transparent; color: var(--gold); font-weight: bold; cursor: pointer; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px; transition: 0.2s;}
+button:active { background: var(--gold); color: var(--bg); }
+.secondary { border-color: #333; color: #666; margin-top: 10px; font-size: 11px; }
 </style>
 </head>
 <body>
 <div class="card">
-<h2 id="title">YOUR VIDEO</h2>
-<input id="input" placeholder="Phone Number or Email" autocomplete="off">
-<button onclick="send('whatsapp')">WhatsApp</button>
-<button onclick="send('sms')">SMS</button>
-<button onclick="send('email')">Email</button>
+    <h2>Dispatch Reel</h2>
+    <p>Send the cinematic reveal directly to the client's device.</p>
+    <input id="input" placeholder="Enter Phone or Email" autocomplete="off">
+    <button onclick="send('whatsapp')">Send via WhatsApp</button>
+    <button onclick="send('email')">Send via Email</button>
+    <button class="secondary" onclick="window.history.back()">← Back to Dashboard</button>
 </div>
 <script>
 const id = new URLSearchParams(window.location.search).get('id');
-const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f031f95d5db82e8430';
-const BASE = 'appGGs07d4FB6htwg';
-const TABLE = 'tblCYkMaAOHrX0nwN';
-
-let isSending = false;
-
-async function load() {
-    if(!id) return;
-    try {
-        const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {formId}="${id}")`);
-        const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
-        const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
-        const data = await res.json();
-        if (data.records && data.records.length > 0) {
-            let name = data.records[0].fields['Charter Name'];
-            if (Array.isArray(name)) name = name[0];
-            document.title = `${name || "Charter"} Video — Rod2Reel`;
-        }
-    } catch(e) {}
-}
-
 function send(type) {
-    if (isSending) return;
     const val = document.getElementById('input').value.trim();
-    if(!val) { alert("Please enter details."); return; }
-    
-    isSending = true;
+    if(!val) { alert("Please enter a destination."); return; }
     const link = `https://delivery.rod2reel.com/reel.html?id=${id}`;
-    const msg = `Your Video: ${link}`;
+    const msg = `Your vehicle transformation is ready! View the reveal here: ${link}`;
 
     if (type === 'whatsapp') {
         let phone = val.replace(/\D/g, '');
         if (phone.startsWith('0') && phone.length === 10) { phone = '27' + phone.substring(1); }
         window.location.href = `https://wa.me/${phone}?text=${encodeURIComponent(msg)}`;
-    } else if (type === 'sms') {
-        window.location.href = `sms:${val}?body=${encodeURIComponent(msg)}`;
     } else if (type === 'email') {
-        window.location.href = `mailto:${val}?subject=Your Video&body=${encodeURIComponent(msg)}`;
+        window.location.href = `mailto:${val}?subject=Your Vehicle Reveal&body=${encodeURIComponent(msg)}`;
     }
-
-    setTimeout(() => { isSending = false; }, 2000);
 }
-load();
 </script>
 </body>
 </html>
