@@ -43,8 +43,6 @@ video{width:100%; display:block;}
             <video id="video" controls playsinline></video>
         </div>
 
-        <button id="saveBtn" class="btn btn-hero" onclick="shareExperience()">📲 Save to my Phone</button>
-
         <a id="reviewBtn" class="btn" style="display:none;">Leave Us A Review</a>
 
         <div id="thankYouBox" class="thank-you-box" style="display:none;">
@@ -54,6 +52,7 @@ video{width:100%; display:block;}
         </div>
 
         <button class="btn" onclick="downloadVideo()">Download Video</button>
+        <button id="saveBtn" class="btn btn-hero" onclick="shareExperience()">Save to my Phone</button>
 
         <div class="footer">
             <div class="footer-main">POWERED BY ROD2REEL</div>
@@ -114,7 +113,6 @@ async function shareExperience() {
         if (navigator.share) {
             await navigator.share(shareData);
         } else {
-            // Fallback for Desktop: Copy link to clipboard
             navigator.clipboard.writeText(window.location.href);
             alert("Link copied to clipboard! You can now paste it into a message.");
         }
