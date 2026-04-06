@@ -17,20 +17,13 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;tex
 video{width:100%; display:block;}
 .btn{width:100%; padding:16px; border-radius:10px; font-weight:bold; font-size:14px; margin-bottom:15px; cursor:pointer; text-decoration:none; display:inline-block; border:2px solid var(--gold); text-transform:uppercase; letter-spacing:1.5px; background:transparent; color:var(--gold); transition: 0.3s;}
 .btn:hover{background:rgba(245, 166, 35, 0.1);}
-
-/* Final Utility Button */
 .btn-hero { background: var(--gold); color: #000; border: none; }
 .btn-hero:hover { background: #e0961f; color: #000; }
-
-/* Centered Thank You Box Content */
 .thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:25px; text-align:center;}
 #captionText{font-size: 15px; color: #bbb; line-height: 1.6;}
 .caption-label { color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 600; }
-
-/* Centered Copy Button */
 .copy-btn { margin: 15px auto 0; padding: 10px 20px; font-size: 12px; border-radius: 8px; border: 1px solid #444; background: transparent; color: #bbb; cursor: pointer; display: block; transition: 0.3s; }
 .copy-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: #666; color: var(--gold); }
-
 .footer { margin-top: 50px; padding-top: 30px; border-top: 1px solid #222; }
 .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
 </style>
@@ -76,20 +69,27 @@ let globalBizName = "ROD2REEL";
 async function load() {
     if (!id) return;
     try {
-        const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {formId}="${id}")`);
-        const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}`;
+        // Updated formula to look for Video ID as well for better accuracy
+        const formula = encodeURIComponent(`OR(FIND("${id}", ARRAYJOIN({lookupId})), {formId}="${id}", {Video ID}="${id}")`);
+        
+        // Added sorting parameter so the LATEST video is always shown first
+        const url = `https://api.airtable.com/v0/${BASE}/${TABLE}?filterByFormula=${formula}&sort[0][field]=Created&sort[0][direction]=desc`;
+        
         const res = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } });
         const data = await res.json();
 
         if (!data.records || data.records.length === 0) return;
 
+        // data.records[0] is now guaranteed to be the newest one because of the sort above
         const f = data.records[0].fields;
         let name = f['Charter Name']; if (Array.isArray(name)) name = name[0];
         let review = f['Review']; if (Array.isArray(review)) review = review[0];
 
         globalBizName = name || "ROD2REEL";
         document.getElementById('bizName').innerText = globalBizName.toUpperCase();
-        document.getElementById('video').src = f['Video URL'] || "";
+        
+        // Add a "cache buster" to the video URL so the browser doesn't show an old cached version
+        document.getElementById('video').src = (f['Video URL'] || "") + "?t=" + new Date().getTime();
 
         if (review) {
             document.getElementById('reviewBtn').href = review;
@@ -113,7 +113,6 @@ async function shareExperience() {
         text: `Check out the highlight of the drive! Here is the link to your video:`,
         url: window.location.href
     };
-
     try {
         if (navigator.share) {
             await navigator.share(shareData);
@@ -125,7 +124,7 @@ async function shareExperience() {
 }
 
 function downloadVideo() { 
-    let url = document.getElementById('video').src;
+    let url = document.getElementById('video').src.split('?')[0]; // Remove cache buster for download
     if (url && url.includes('cloudinary')) url = url.replace('/upload/', '/upload/fl_attachment/');
     if(url){
         const a = document.createElement('a');
@@ -146,9 +145,5 @@ function copyCaption() {
 
 load();
 </script>
-
-</body>
-</html>
-
 </body>
 </html>
