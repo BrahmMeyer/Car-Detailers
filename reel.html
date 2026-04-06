@@ -22,11 +22,15 @@ video{width:100%; display:block;}
 .btn-hero { background: var(--gold); color: #000; border: none; }
 .btn-hero:hover { background: #e0961f; color: #000; }
 
-.thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:25px; text-align:left;}
+/* Centered Thank You Box Content */
+.thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:25px; text-align:center;}
 #captionText{font-size: 15px; color: #bbb; line-height: 1.6;}
 .caption-label { color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 600; }
-.copy-btn { margin-top: 15px; padding: 10px 14px; font-size: 12px; border-radius: 8px; border: 1px solid #444; background: transparent; color: #bbb; cursor: pointer; display: inline-block; transition: 0.3s; }
+
+/* Centered Copy Button */
+.copy-btn { margin: 15px auto 0; padding: 10px 20px; font-size: 12px; border-radius: 8px; border: 1px solid #444; background: transparent; color: #bbb; cursor: pointer; display: block; transition: 0.3s; }
 .copy-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: #666; color: var(--gold); }
+
 .footer { margin-top: 50px; padding-top: 30px; border-top: 1px solid #222; }
 .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
 </style>
@@ -48,7 +52,7 @@ video{width:100%; display:block;}
         <div id="thankYouBox" class="thank-you-box" style="display:none;">
             <div class="caption-label">Social Media Caption</div>
             <div id="captionText"></div>
-            <button class="copy-btn" onclick="copyCaption()">📋 Copy</button>
+            <button class="copy-btn" onclick="copyCaption()">📋 Copy Caption</button>
         </div>
 
         <button class="btn" onclick="downloadVideo()">Download Video</button>
@@ -136,12 +140,15 @@ function copyCaption() {
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.querySelector('.copy-btn');
         btn.innerText = "✓ Copied";
-        setTimeout(() => { btn.innerText = "📋 Copy"; }, 2000);
+        setTimeout(() => { btn.innerText = "📋 Copy Caption"; }, 2000);
     });
 }
 
 load();
 </script>
+
+</body>
+</html>
 
 </body>
 </html>
