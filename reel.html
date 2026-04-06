@@ -17,37 +17,16 @@ body{background:var(--bg);color:var(--text);font-family:'DM Sans',sans-serif;tex
 video{width:100%; display:block;}
 .btn{width:100%; padding:16px; border-radius:10px; font-weight:bold; font-size:14px; margin-bottom:15px; cursor:pointer; text-decoration:none; display:inline-block; border:2px solid var(--gold); text-transform:uppercase; letter-spacing:1.5px; background:transparent; color:var(--gold); transition: 0.3s;}
 .btn:hover{background:rgba(245, 166, 35, 0.1);}
+
+/* Hero Button: Save to Phone */
+.btn-hero { background: var(--gold); color: #000; border: none; }
+.btn-hero:hover { background: #e0961f; color: #000; }
+
 .thank-you-box{background:var(--surface); border:1px solid var(--border); border-radius:20px; padding:25px; margin-bottom:25px; text-align:left;}
 #captionText{font-size: 15px; color: #bbb; line-height: 1.6;}
-
-.caption-label {
-    color: var(--gold);
-    font-size: 12px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 10px;
-    font-weight: 600;
-}
-
-.copy-btn {
-    margin-top: 15px;
-    padding: 10px 14px;
-    font-size: 12px;
-    border-radius: 8px;
-    border: 1px solid #444; /* Updated to light grey */
-    background: transparent;
-    color: #bbb;
-    cursor: pointer;
-    display: inline-block;
-    transition: 0.3s;
-}
-
-.copy-btn:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: #666;
-    color: var(--gold);
-}
-
+.caption-label { color: var(--gold); font-size: 12px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; font-weight: 600; }
+.copy-btn { margin-top: 15px; padding: 10px 14px; font-size: 12px; border-radius: 8px; border: 1px solid #444; background: transparent; color: #bbb; cursor: pointer; display: inline-block; transition: 0.3s; }
+.copy-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: #666; color: var(--gold); }
 .footer { margin-top: 50px; padding-top: 30px; border-top: 1px solid #222; }
 .footer-main { font-size: 12px; color: var(--grey); letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
 </style>
@@ -63,6 +42,8 @@ video{width:100%; display:block;}
         <div class="video-wrap">
             <video id="video" controls playsinline></video>
         </div>
+
+        <button id="saveBtn" class="btn btn-hero" onclick="shareExperience()">📲 Save to my Phone</button>
 
         <a id="reviewBtn" class="btn" style="display:none;">Leave Us A Review</a>
 
@@ -86,6 +67,8 @@ const TOKEN = 'patODjpFQhnsR92tl.5c80e0baa73a4b2099a83fead58c6cf8ac9811041b7077f
 const BASE = 'appGGs07d4FB6htwg';
 const TABLE = 'tblCYkMaAOHrX0nwN';
 
+let globalBizName = "ROD2REEL";
+
 async function load() {
     if (!id) return;
     try {
@@ -97,14 +80,11 @@ async function load() {
         if (!data.records || data.records.length === 0) return;
 
         const f = data.records[0].fields;
+        let name = f['Charter Name']; if (Array.isArray(name)) name = name[0];
+        let review = f['Review']; if (Array.isArray(review)) review = review[0];
 
-        let name = f['Charter Name']; 
-        if (Array.isArray(name)) name = name[0];
-
-        let review = f['Review']; 
-        if (Array.isArray(review)) review = review[0];
-
-        document.getElementById('bizName').innerText = (name || "ROD2REEL").toUpperCase();
+        globalBizName = name || "ROD2REEL";
+        document.getElementById('bizName').innerText = globalBizName.toUpperCase();
         document.getElementById('video').src = f['Video URL'] || "";
 
         if (review) {
@@ -123,6 +103,24 @@ async function load() {
     } catch (e) { console.error(e); }
 }
 
+async function shareExperience() {
+    const shareData = {
+        title: `Your ${globalBizName} Experience`,
+        text: `Check out the highlight of the drive! Here is the link to your video:`,
+        url: window.location.href
+    };
+
+    try {
+        if (navigator.share) {
+            await navigator.share(shareData);
+        } else {
+            // Fallback for Desktop: Copy link to clipboard
+            navigator.clipboard.writeText(window.location.href);
+            alert("Link copied to clipboard! You can now paste it into a message.");
+        }
+    } catch (err) { console.log('Share failed:', err); }
+}
+
 function downloadVideo() { 
     let url = document.getElementById('video').src;
     if (url && url.includes('cloudinary')) url = url.replace('/upload/', '/upload/fl_attachment/');
@@ -139,9 +137,7 @@ function copyCaption() {
     navigator.clipboard.writeText(text).then(() => {
         const btn = document.querySelector('.copy-btn');
         btn.innerText = "✓ Copied";
-        setTimeout(() => {
-            btn.innerText = "📋 Copy";
-        }, 2000);
+        setTimeout(() => { btn.innerText = "📋 Copy"; }, 2000);
     });
 }
 
