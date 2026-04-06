@@ -18,7 +18,7 @@ video{width:100%; display:block;}
 .btn{width:100%; padding:16px; border-radius:10px; font-weight:bold; font-size:14px; margin-bottom:15px; cursor:pointer; text-decoration:none; display:inline-block; border:2px solid var(--gold); text-transform:uppercase; letter-spacing:1.5px; background:transparent; color:var(--gold); transition: 0.3s;}
 .btn:hover{background:rgba(245, 166, 35, 0.1);}
 
-/* Hero Button: Save to Phone */
+/* Final Utility Button */
 .btn-hero { background: var(--gold); color: #000; border: none; }
 .btn-hero:hover { background: #e0961f; color: #000; }
 
@@ -52,6 +52,7 @@ video{width:100%; display:block;}
         </div>
 
         <button class="btn" onclick="downloadVideo()">Download Video</button>
+
         <button id="saveBtn" class="btn btn-hero" onclick="shareExperience()">Save to my Phone</button>
 
         <div class="footer">
@@ -114,7 +115,7 @@ async function shareExperience() {
             await navigator.share(shareData);
         } else {
             navigator.clipboard.writeText(window.location.href);
-            alert("Link copied to clipboard! You can now paste it into a message.");
+            alert("Link copied to clipboard!");
         }
     } catch (err) { console.log('Share failed:', err); }
 }
