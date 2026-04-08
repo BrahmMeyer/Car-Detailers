@@ -25,10 +25,10 @@ video{width:100%; display:block;}
 .copy-btn { margin: 15px auto 0; padding: 10px 20px; font-size: 12px; border-radius: 8px; border: 1px solid #444; background: transparent; color: #bbb; cursor: pointer; display: block; transition: 0.3s; }
 .copy-btn:hover { background: rgba(255, 255, 255, 0.05); border-color: #666; color: var(--gold); }
 
-/* Updated Footer - Removed line, added Logo style */
-.footer { margin-top: 20px; padding-top: 10px; border-top: none; }
-#bizLogo { max-height: 135px; width: auto; margin: 20px auto; display: none; } 
-.footer-main { font-size: 12px; color: var(--grey); letter-spacing: 3px; font-weight: bold; text-transform: uppercase; margin-top: 10px; }
+/* FOOTER LOGO & CLEANUP */
+.footer { margin-top: 10px; padding-top: 0; border-top: none; } /* Removed thin grey line */
+#bizLogo { max-height: 135px; width: auto; margin: 30px auto 10px; display: none; } /* 35% Bigger */
+.footer-main { font-size: 12px; color: var(--grey); letter-spacing: 3px; font-weight: bold; text-transform: uppercase; }
 </style>
 </head>
 <body>
@@ -83,28 +83,38 @@ async function load() {
         if (!data.records || data.records.length === 0) return;
 
         const f = data.records[0].fields;
+        
+        // Map Business Name
         let name = f['Charter Name']; if (Array.isArray(name)) name = name[0];
-        let review = f['Review']; if (Array.isArray(review)) review = review[0];
-        let logoUrl = f['Logo URL']; if (Array.isArray(logoUrl)) logoUrl = logoUrl[0];
-
         globalBizName = name || "ROD2REEL";
         document.getElementById('bizName').innerText = globalBizName.toUpperCase();
         
-        // Handle Video
+        // Map Video
         document.getElementById('video').src = (f['Video URL'] || "") + "?t=" + new Date().getTime();
 
-        // Handle Logo mapping
-        if (logoUrl) {
-            const logoImg = document.getElementById('bizLogo');
-            logoImg.src = logoUrl;
-            logoImg.style.display = 'block';
+        // LOGO LOGIC (Mapped to 'Logo' field)
+        const logoData = f['Logo'];
+        let finalLogoUrl = "";
+        if (Array.isArray(logoData)) {
+            finalLogoUrl = logoData[0].url || logoData[0]; 
+        } else {
+            finalLogoUrl = logoData;
         }
 
+        if (finalLogoUrl) {
+            const logoImg = document.getElementById('bizLogo');
+            logoImg.src = finalLogoUrl;
+            logoImg.onload = () => { logoImg.style.display = 'block'; };
+        }
+
+        // Review Button
+        let review = f['Review']; if (Array.isArray(review)) review = review[0];
         if (review) {
             document.getElementById('reviewBtn').href = review;
             document.getElementById('reviewBtn').style.display = 'block';
         }
 
+        // Caption Box
         if (f['Social Post 1']) {
             document.getElementById('thankYouBox').style.display = 'block';
             document.getElementById('captionText').innerText = f['Social Post 1'];
